@@ -313,7 +313,7 @@
                 <!--smoke-->
                 <g mask="url(#Mask)">
                   <animate id="gunSmoke" attributeName="opacity" dur="5s" attributeType="XML" begin="indefinite"
-                           from="0" to="1" keyTimes="0;1"></animate>
+                           from="0" to="1"></animate>
                   <g filter="url(#smokeFilter)">
                     <animateTransform xmlns="http://www.w3.org/2000/svg" attributeName="transform" type="translate"
                                       values="0 0;0 -30000;0 -30000" dur="1200" repeatCount="indefinite"
