@@ -1,0 +1,94 @@
+<div data-ng-controller="CommentsAnimationController as co" class="col-xs-12 comments md-whiteframe-z1 bg-white pad-bot-15">
+  <h3>Comments</h3>
+  <hr/>
+  <ul data-ng-if="::vm.auth.user" class="list-unstyled mar-0">
+    <li class="row">
+      <div class="col-sm-2 col-xs-3">
+        <a data-dp-user-href="{{::vm.auth.user._id}}"
+           class="light-border user-thumbnail no-dec pull-left bg-white">
+          <img class="img-responsive" data-dp-thumb="{{::vm.auth.user._id}}"
+               data-dp-thumb-type="users">
+        </a>
+      </div>
+      <div class="col-sm-10 col-xs-9">
+        <form name="commentForm" novalidate class="form-horizontal" role="form">
+          <md-input-container class="w-100">
+            <label>What do you think?</label>
+            <textarea name="commentText" data-ng-model="co.message" columns="1" class="w-100"
+                      rows="2" md-maxlength="500" md-maxlength="500" ng-minlength="3" required></textarea>
+            <div ng-messages="commentForm.commentText.$error">
+              <div data-ng-message="minlength">Your comment is too short</div>
+              <div data-ng-message="md-maxlength">Your comment is too long</div>
+            </div>
+          </md-input-container>
+          <div class="col-xs-12 col-xs-offset-0 mar-bot-10 hpad-0">
+            <md-button data-ng-disabled="!commentForm.$valid" data-ng-click="co.addComment(this)" aria-label="Add Comment"
+                       class="md-primary md-raised pull-right btn-md-if-xs">Send</md-button>
+            </div>
+        </form>
+      </div>
+    </li>
+  </ul>
+  <div data-ng-hide="!co.loading && !vm.current.anim.comments.length" class="form-group">
+    <div class="row">
+      <div class="col-sm-3 col-xs-12">
+        <select data-ng-options="opt.value as opt.name for opt in co.sortOptions"
+                data-ng-model="co.commentsStorage.sort"
+                data-ng-change="co.sortChange()"
+                class="form-control font-sm">
+        </select>
+      </div>
+    </div>
+  </div>
+  <ul class="list-unstyled">
+    <li data-ng-repeat="comment in vm.current.anim.comments"
+        data-ng-mouseenter="comment.hover = true"
+        data-ng-mouseleave="comment.hover = false"
+        class="row mar-bot-15 comment-item">
+      <div class="col-sm-2 col-xs-3">
+        <a data-dp-user-href="{{::comment.creator}}"
+           class="light-border user-thumbnail no-dec pull-left bg-white">
+          <img class="img-responsive" data-dp-thumb="{{::comment.creator}}"
+               data-dp-thumb-type="users">
+        </a>
+      </div>
+      <div class="col-sm-10 col-xs-9">
+        <div class="row">
+          <div class="col-xs-12 comment-content-wrap">
+            <a data-dp-user-href="{{::comment.creator}}">{{::comment.creator}}</a>
+            <h5 class="inline mar-lef-10">
+              <small>{{comment.dateCreation | timeAgo}}</small>
+            </h5>
+            <p>{{::comment.message}}</p>
+          </div>
+          <div class="col-xs-12">
+            <div class="row comment-action-wrap">
+              <div class="col-xs-6">
+                <h5 data-ng-show="comment.likes.length">
+                  <small><i class="icon-star"></i> {{comment.likes.length}}</small>
+                </h5>
+              </div>
+              <div class="col-xs-6">
+                <md-button data-ng-click="co.likeComment(comment)" data-ng-show="comment.hover"
+                           data-ng-disabled="::!vm.auth.user && comment._id" aria-label="Like comment"
+                           class="md-raised md-primary pull-right btn-xs comment-hover-btn">
+                  {{comment.likes.indexOf(vm.auth.user._id) !== -1 ? 'Unlike' : 'Like'}}
+                </md-button>
+                <md-button data-ng-show="comment._id && comment.creator === vm.auth.user._id && comment.hover"
+                           data-ng-click="co.deleteComment(comment)"
+                           aria-label="Delete comment"
+                           class="mar-rig-10 md-warn pull-right comment-hover-btn btn-xs">
+                  Delete</md-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <h5 class="mar-bot-10" data-ng-show="!co.loading && !vm.current.anim.comments.length">No comments were added yet</h5>
+  <div data-ng-hide="co.loading || co.allLoaded" class="w-100 text-center">
+    <md-button data-ng-click="co.showMore()" aria-label="Show more comments" class="mar-top-10 mar-bot-15">Show more
+    </md-button>
+  </div>
+</div>

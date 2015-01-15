@@ -1,0 +1,25 @@
+<md-dialog aria-label="Animation Title & Description">
+  <md-content class="canvas-publish-anim">
+    <md-subheader class="md-sticky-no-effect">Animation Title & Description</md-subheader>
+    <form novalidate name="publishAnimForm">
+      <div class="form-group">
+        <label for="animTitle">Title</label>
+        <input id="animTitle" data-ng-model="vm.title" name="title" data-ng-maxLength="vm.AnimsConfig.titleMaxLength"
+               data-ng-minLength="vm.AnimsConfig.titleMinLength" type="text" placeholder="Enter animation title"
+               class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="animDesc">Description ({{vm.charsLeft(publishAnimForm.desc.$valid)}})</label>
+        <textarea data-ng-model="vm.desc" name="desc" id="animDesc" data-ng-maxLength="vm.AnimsConfig.descMaxLength"
+                  class="form-control" placeholder="Enter short description"></textarea>
+      </div>
+    </form>
+
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button ng-click="vm.answer()">Not yet</md-button>
+    <md-button data-ng-disabled="publishAnimForm.$invalid || publishAnimForm.$pristine"
+               data-ng-click="vm.answer({title : vm.title, desc : vm.desc})"
+               class="md-primary">Publish Animation!</md-button>
+  </div>
+</md-dialog>

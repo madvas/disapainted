@@ -1,0 +1,91 @@
+@userThumbWidth : 246px;
+@userThumbHeight : 293px;
+
+.user-settings-textarea-wrap {
+  label {
+    font-size: @font-size-small;
+    color: rgba(0, 0, 0, 0.372);
+  }
+  textarea {
+    border-radius: 0;;
+    resize: none;
+  }
+}
+
+.user-edit-portrait {
+  .user-edit-portrait-canvas-wrap {
+    margin-top: 20px;
+    width: @userThumbWidth;
+    height: @userThumbHeight;
+    margin-right: auto;
+    margin-left: auto;
+    canvas {
+      width: @userThumbWidth;
+      height: @userThumbHeight;
+      cursor: none;
+    }
+  }
+
+  .user-edit-portrait-tools {
+    text-align: left;
+    margin-top: 20px;;
+    width: @userThumbWidth + 10;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .brush-width-group {
+    width: 85px;
+  }
+}
+
+.user-anims {
+  .user-anim-title {
+    min-height: 21px;
+  }
+  .anim-create-btn {
+    //    margin-top: 25px;
+  }
+  .published-switch {
+    @media (max-width: @screen-xs-max) {
+      margin-top: 15px;
+      margin-bottom: 5px;;
+    }
+  }
+  .user-info-wrap {
+    max-width: @userThumbWidth;
+  }
+  .user-anims-list-item {
+    min-height: 265px;;
+    img {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    &.creator {
+      min-height: 325px;
+    }
+    &.ng-move,
+    &.ng-enter,
+    &.ng-leave {
+      .transition-style();
+    }
+
+    &.ng-leave.ng-leave-active,
+    &.ng-move,
+    &.ng-enter {
+      opacity: 0;
+      bottom: -50px;
+    }
+
+    &.ng-enter-stagger {
+      .stagger-delay();
+    }
+
+    &.ng-leave,
+    &.ng-move.ng-move-active,
+    &.ng-enter.ng-enter-active {
+      opacity: 1;
+      bottom: 0;
+    }
+
+  }
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="124.893px" height="163.071px" viewBox="32.408 210.868 124.893 163.071"
+	 style="enable-background:new 32.408 210.868 124.893 163.071;" xml:space="preserve">
+<pattern  x="-416.691" y="348.998" width="82.8" height="72" patternUnits="userSpaceOnUse" id="Regla_escocesa_3" viewBox="22.401 -76.8 82.8 72" style="overflow:visible;">
+	<g>
+		<polygon style="fill:none;" points="22.401,-4.8 22.401,-76.8 105.201,-76.8 105.201,-4.8 		"/>
+		<line style="fill:#FFFFFF;" x1="6.401" y1="-10.8" x2="12.401" y2="-4.8"/>
+		<line style="fill:#FFFFFF;" x1="6.401" y1="-4.8" x2="12.401" y2="-10.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:9.6;stroke-linecap:square;" x1="63.801" y1="-4.8" x2="63.801" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:9.6;stroke-linecap:square;" x1="8.601" y1="-64.8" x2="8.601" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:9.6;stroke-linecap:square;" x1="36.201" y1="-4.8" x2="36.201" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:9.6;stroke-linecap:square;" x1="91.401" y1="-4.8" x2="91.401" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="72.201" y1="-4.8" x2="72.201" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="17.001" y1="-64.8" x2="17.001" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="44.602" y1="-4.8" x2="44.602" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="99.802" y1="-4.8" x2="99.802" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="27.801" y1="-4.8" x2="27.801" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="55.401" y1="-4.8" x2="55.401" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="0.2" y1="-64.8" x2="0.2" y2="-76.8"/>
+		<line style="fill:none;stroke:#1D1D1B;stroke-width:0.4;stroke-linecap:square;" x1="83.001" y1="-4.8" x2="83.001" y2="-76.8"/>
+	</g>
+</pattern>
+<g>
+	<path style="fill:#CED8D8;" d="M156.932,296.7c-35.561-20.703-62.156-61.409-62.156-61.409l1.381,63.078H34.363
+		c0,0,3.913,21.808,3.913,37.785c0,17.153-3.913,37.785-3.913,37.785h122.938c0,0-3.645-23.737-3.645-37.785
+		C153.656,321.56,156.932,296.7,156.932,296.7z"/>
+	<g>
+		<g>
+			<line style="fill:none;stroke:#4D4D4D;stroke-miterlimit:10;" x1="94.533" y1="237.596" x2="94.533" y2="210.9"/>
+			<g>
+				<g style="opacity:0.15;">
+					<polygon points="119.141,223.712 95.854,223.712 95.854,212.868 119.141,212.868 112.467,218.291 					"/>
+				</g>
+				<g>
+					<polygon style="fill:#D64752;" points="118.141,221.712 94.854,221.712 94.854,210.868 118.141,210.868 111.467,216.291 					
+						"/>
+				</g>
+			</g>
+		</g>
+		<g>
+			<g>
+				<path style="fill:#E5B120;" d="M155.64,371.64H32.408c0,0,3.922-20.298,3.922-37.173c0-15.719-3.922-37.174-3.922-37.174H155.64
+					c0,0-3.653,22.815-3.653,37.174C151.986,348.287,155.64,371.64,155.64,371.64z"/>
+				<pattern  id="SVGID_1_" xlink:href="#Regla_escocesa_3" patternTransform="matrix(1.0686 0 0 1 521.6777 46.5654)">
+				</pattern>
+				<path style="opacity:0.2;fill:url(#SVGID_1_);" d="M154.465,372.148H33.123c0,0,3.861-18.703,3.861-34.253
+					c0-14.483-3.861-34.254-3.861-34.254h121.342c0,0-3.597,21.023-3.597,34.254C150.868,350.63,154.465,372.148,154.465,372.148z"
+					/>
+			</g>
+			<g>
+				<g>
+					<path style="fill:#C69B32;" d="M105.554,371.64c0.748-28.518-10.651-58.05-10.651-58.05h-0.169c0,0-11.398,29.532-10.652,58.05
+						"/>
+				</g>
+				<path style="fill:#EFC12E;" d="M94.902,313.59c0,0-17.38,29.025-41.007,26.209c0,0,4.832,19.547,30.186,31.841
+					C84.081,371.64,83.094,343.385,94.902,313.59z"/>
+				<path style="fill:#EFC12E;" d="M94.775,313.59c0,0,17.382,29.025,41.008,26.209c0,0-4.832,19.547-30.186,31.841
+					C105.598,371.64,106.658,344.823,94.775,313.59z"/>
+			</g>
+			<path style="fill:#EFC12E;" d="M94.533,237.189v-0.282c0,0-0.033,0.05-0.093,0.14c-0.059-0.09-0.091-0.14-0.091-0.14v0.273
+				c-2.388,3.535-28.012,40.724-61.941,60.112c0,5.862,4.811,10.613,10.743,10.613c4.792,0,8.846-3.099,10.231-7.377
+				c1.386,4.278,5.44,7.377,10.231,7.377c4.79,0,8.845-3.1,10.229-7.379c1.386,4.279,5.44,7.379,10.23,7.379
+				c4.792,0,8.847-3.1,10.231-7.378c1.386,4.278,5.44,7.378,10.229,7.378c4.793,0,8.848-3.1,10.232-7.38
+				c1.385,4.28,5.44,7.38,10.23,7.38c5.934,0,10.744-4.751,10.744-10.613c0,5.401,4.433,9.779,9.898,9.779
+				c5.467,0,9.898-4.378,9.898-9.779h0.101C121.733,277.919,96.879,240.771,94.533,237.189z"/>
+		</g>
+	</g>
+</g>
+</svg>

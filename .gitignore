@@ -1,0 +1,15 @@
+.DS_Store
+.nodemonignore
+.sass-cache/
+npm-debug.log
+node_modules/
+public/lib
+app/tests/coverage/
+.bower-*/
+.idea/
+config/sslcert/*.pem
+public/dist/build
+setEnvVars.fish
+setEnvVars.sh
+logs
+deploys.json

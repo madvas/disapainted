@@ -1,0 +1,31 @@
+<md-input-container>
+  <label>Username</label>
+  <input name="username" ng-model="vm.user._id" ng-disabled="true">
+</md-input-container>
+
+<md-input-container>
+  <label>Email</label>
+  <input name="email" ng-model="vm.user.email" type="email" required>
+
+  <div ng-if="userForm.email.$dirty" ng-messages="userForm.email.$error">
+    <div ng-message="email">This is not correct format of an email.</div>
+    <div ng-message="required">Email is required</div>
+  </div>
+</md-input-container>
+
+<md-input-container flex>
+  <label>Bio</label>
+  <textarea name="bio" data-ng-model="vm.user.bio" columns="1"
+            rows="2" md-maxlength="vm.UsersConfig.maxBioLength"></textarea>
+
+  <div ng-if="userForm.bio.$dirty" ng-messages="userForm.bio.$error">
+    <div data-ng-message="md-maxlength">Your bio is too long</div>
+  </div>
+</md-input-container>
+
+<div class="text-right mar-top-15">
+  <md-button data-ng-click="vm.saveProfile()" data-ng-disabled="!userForm.$valid"
+             aria-label="Save">
+    <i class="icon-save"></i> Save
+  </md-button>
+</div>

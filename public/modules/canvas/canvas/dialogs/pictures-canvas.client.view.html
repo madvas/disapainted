@@ -1,0 +1,65 @@
+<md-dialog aria-label="Choose Picture" class="canvas-picture-dialog">
+  <md-tabs md-selected="selectedTab" md-stretch-tabs="never" class="canvas-picture-tabs">
+    <md-tab id="objectsTab" aria-controls="objectsTab-content">Objects</md-tab>
+    <md-tab id="effectsTab" aria-controls="effectsTab-content">Effects</md-tab>
+    <md-tab id="weaponsTab" aria-controls="weaponsTab-content">Weapons</md-tab>
+  </md-tabs>
+  <md-content>
+    <div class="text-right mar-bot-5 font-xs">(Most of) images were designed by
+      <a data-analytics-on="click" data-analytics-event="externalLink" data-analytics-category="freepik"
+         href="http://freepik.com/" target="_blank">freepik.com
+      </a></div>
+    <ng-switch on="selectedTab" class="tabpanel-container">
+      <div role="tabpanel" id="objectsTab-content" aria-labelledby="objectsTab" data-ng-switch-when="0"
+           class="row canvas-pictures mar-top-15">
+        <div class="canvas-pictures-list-wrap">
+          <div data-ng-repeat="pic in vm.pictures.objects | rest:(objectsCurrentPage - 1) * vm.pageSize |
+        limitTo:vm.pageSize" class="col-lg-2 col-xs-4">
+            <div class="selectable" data-ng-if="vm.isSvg(pic)" data-ng-click="vm.answer($event, true)"
+                 data-ng-include="pic"></div>
+            <img class="selectable" data-ng-if="!vm.isSvg(pic)" data-ng-click="vm.answer(pic)" data-ng-src="{{pic}}"/>
+          </div>
+        </div>
+        <div class="pull-left w-100 text-center mar-top-10">
+          <pagination boundary-links="true" total-items="vm.pictures.objects.length" ng-model="objectsCurrentPage"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                      items-per-page="vm.pageSize"></pagination>
+        </div>
+
+      </div>
+      <div role="tabpanel" id="effectsTab-content" aria-labelledby="effectsTab" data-ng-switch-when="1"
+           class="row canvas-pictures">
+        <div class="canvas-pictures-list-wrap">
+          <div data-ng-repeat="pic in vm.pictures.effects | rest:(effectsCurrentPage - 1) * vm.pageSize |
+        limitTo:vm.pageSize" class="col-lg-2 col-xs-4">
+            <div class="selectable" data-ng-if="vm.isSvg(pic)" data-ng-click="vm.answer($event, true)"
+                 data-ng-include="pic"></div>
+            <img class="selectable" data-ng-if="!vm.isSvg(pic)" data-ng-click="vm.answer(pic)" data-ng-src="{{pic}}"/>
+          </div>
+        </div>
+        <div class="pull-left w-100 text-center mar-top-10">
+          <pagination boundary-links="true" total-items="vm.pictures.effects.length" ng-model="effectsCurrentPage"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                      items-per-page="vm.pageSize"></pagination>
+        </div>
+      </div>
+      <div role="tabpanel" id="weaponsTab-content" aria-labelledby="weaponsTab" data-ng-switch-when="2"
+           class="row canvas-pictures">
+        <div class="canvas-pictures-list-wrap">
+          <div data-ng-repeat="pic in vm.pictures.weapons |  rest:(weaponsCurrentPage - 1) * vm.pageSize |
+        limitTo:vm.pageSize" class="col-lg-2 col-xs-4">
+            <div class="selectable" data-ng-if="vm.isSvg(pic)" data-ng-click="vm.answer($event, true)"
+                 data-ng-include="pic"></div>
+            <img class="selectable" data-ng-if="!vm.isSvg(pic)" data-ng-click="vm.answer(pic)" data-ng-src="{{pic}}"/>
+          </div>
+        </div>
+        <div class="pull-left w-100 text-center mar-top-10">
+          <pagination boundary-links="true" total-items="vm.pictures.weapons.length" ng-model="weaponsCurrentPage"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                      items-per-page="vm.pageSize"></pagination>
+        </div>
+      </div>
+    </ng-switch>
+
+  </md-content>
+</md-dialog>

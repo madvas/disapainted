@@ -1,0 +1,46 @@
+<section class="section-welcome container text-center">
+  <object class="disapaintedSvg" type="image/svg+xml" data="modules/core/img/disapainted.svg"></object>
+</section>
+
+<div data-ng-repeat="(secName, sec) in vm.sections">
+  <section data-ng-init="vm.getList(secName, typeName)" data-ng-repeat="(typeName, type) in sec.types"
+           class="section-welcome-list {{secName}}-{{typeName}}">
+    <div class="container">
+      <h2 class=""><span>{{::type.title}}</span></h2>
+
+      <div class="row" data-ng-switch="secName">
+        <div data-ng-switch-when="anims">
+          <div data-ng-repeat="(itemKey, item) in type.list" data-ng-class="{'col-md-offset-2' : itemKey === 6}"
+               class="col-lg-3 col-lg-offset-0 col-md-4 col-sm-6 col-xs-12 home-list-item">
+            <a data-dp-anim-href="{{::item._id}}"
+               data-popover-placement="{{::vm.getPopoverPlacement(itemKey, type.list)}}"
+               data-popover="{{::item.title}}" data-popover-trigger="mouseenter"
+               class="md-whiteframe-z1 anim-thumb-link no-dec">
+              <img class="img-responsive w-100" data-dp-thumb="{{::item._id}}"/>
+              <h6 class="gray-dark">
+                <i class="icon-film"></i> {{::item.framesCount}}
+                <i class="mar-lef-5 icon-star"></i> {{::item.likesCount}}
+                <span class="gray-text pull-right">{{::item.datePublish | timeAgo}}</span>
+                <span class="pull-right creator"> {{::item.creator | characters:15}} </span>
+              </h6>
+            </a>
+          </div>
+        </div>
+        <div data-ng-switch-when="users">
+          <div data-ng-repeat="(itemKey, item) in type.list" class="col-md-2 col-md-offset-0 col-sm-3 col-xs-12"
+               data-ng-class="{'col-sm-offset-3' : itemKey === 4}">
+            <a data-dp-user-href="{{::item._id}}"
+               class="md-whiteframe-z1 anim-thumb-link no-dec">
+              <img class="img-responsive center-block" data-dp-thumb="{{::item._id}}" data-dp-thumb-type="users">
+
+              <div class="user-caption gray-dark">
+                <div class="ellipsis">{{::item._id}}</div>
+                <small><i class="icon-star"></i> {{::item.likesCount}}</small>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,36 @@
+<p>If you found a bug or have some cool feature idea, please consider reporting it on our
+  <a href="https://github.com/madvas/disapainted/issues" target="_blank">Github issues page</a></p>
+<md-input-container>
+  <label>Email</label>
+  <input name="email" ng-model="vm.contact.email" type="email" required>
+
+  <div ng-if="userForm.email.$dirty" ng-messages="userForm.email.$error">
+    <div ng-message="email">This is not correct format of an email.</div>
+    <div ng-message="required">Email is required</div>
+  </div>
+</md-input-container>
+<md-input-container>
+  <label>Subject</label>
+  <input md-maxlength="vm.contactConfig.subjLen" name="subject" ng-model="vm.contact.subject" required>
+
+  <div ng-if="userForm.subject.$dirty" ng-messages="userForm.subject.$error">
+    <div ng-message="required">Subject is required</div>
+    <div ng-message="md-maxlength">The subject has to be less than {{vm.contactConfig.subjLen}} characters long</div>
+  </div>
+</md-input-container>
+<md-input-container flex>
+  <label>Message</label>
+  <textarea name="contactMsg" data-ng-model="co.message" columns="1"
+            rows="3" md-maxlength="vm.contactConfig.msgLen" required></textarea>
+
+  <div ng-if="userForm.contactMsg.$dirty" ng-messages="userForm.contactMsg.$error">
+    <div data-ng-message="required">Message text is required</div>
+    <div data-ng-message="md-maxlength">Your message is too long</div>
+  </div>
+</md-input-container>
+<div class="text-right mar-top-15">
+  <md-button data-ng-click="vm.sendContactMsg()" data-ng-disabled="!userForm.$valid"
+             aria-label="Send Message">
+    <i class="icon-save"></i> Send Message
+  </md-button>
+</div>

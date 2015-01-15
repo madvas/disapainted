@@ -1,0 +1,272 @@
+@md-primary : #4CAF50;
+@md-warn : #E91E63;
+@md-accent : #FFC107;
+/* Bootstrap overrides */
+@bgColor : #f2f2f2;
+@body-bg : @bgColor;
+@brand-primary : #2E7D32;
+@brand-success : @brand-primary;
+@brand-danger: @md-warn;
+@brand-info: @md-accent;
+@input-border-focus : @md-accent;
+@font-family-base: 'RobotoDraft', 'Helvetica Neue', Helvetica, Arial;
+
+@frameWidth: 640px;
+@frameHeight : 360px;
+@frameThumbWidth: 120px;
+@frameThumbHeight: 68px;
+
+a.md-button, a.md-button:hover, a.md-button:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.btn {
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      outline: none;;
+    }
+  }
+}
+
+a.md-button {
+  &.md-warn {
+    color: @md-warn !important;
+  }
+  &.md-primary {
+    color: @md-primary !important;
+  }
+}
+
+.logo {
+  width: 170px;
+}
+
+.disapaintedSvg {
+  width: 100%;
+  max-width: 860px;
+}
+
+.ui-view-container {
+  position: relative;
+}
+
+section.main {
+  background-color: @bgColor;
+  padding: 20px 0;
+}
+
+section.main.ng-enter, section.main.ng-leave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+}
+
+section.main.ng-enter + .footer, section.main.ng-leave-active + .footer {
+  opacity: 0;
+}
+
+section.main.ng-enter {
+  opacity: 0;
+  -webkit-transform: scale3d(0.5, 0.5, 0.5);
+  -moz-transform: scale3d(0.5, 0.5, 0.5);
+  transform: scale3d(0.5, 0.5, 0.5);
+}
+
+section.main.ng-enter-active {
+  opacity: 1;
+  -webkit-transform: scale3d(1, 1, 1);
+  -moz-transform: scale3d(1, 1, 1);
+  transform: scale3d(1, 1, 1);
+}
+
+section.main.ng-leave {
+  opacity: 1;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+section.main.ng-leave-active {
+  opacity: 0;
+  -webkit-transform: translate3d(100px, 0, 0);
+  -moz-transform: translate3d(100px, 0, 0);
+  transform: translate3d(100px, 0, 0);
+}
+
+h1, h2, h3, h4 {
+  font-weight: 300 !important;
+  line-height: @line-height-base !important;
+}
+
+h5, h6 {
+  font-weight: 400 !important;
+}
+
+h1, .h1 {
+  font-size: @font-size-h1 !important;
+}
+
+h2, .h2 {
+  font-size: @font-size-h2 !important;
+}
+
+h3, .h3 {
+  font-size: @font-size-h3 !important;
+}
+
+h4, .h4 {
+  font-size: @font-size-h4 !important;
+}
+
+h5, .h5 {
+  font-size: @font-size-h5 !important;
+}
+
+h6, .h6 {
+  font-size: @font-size-h6 !important;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  -ms-word-wrap: break-word;
+  word-wrap: break-word;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+//form *:not(.novalidate) > .ng-invalid.ng-dirty {
+//  border-color: @invalidColor;
+//}
+
+form .ng-invalid.ng-dirty {
+  border-color: @brand-danger;
+}
+
+.msg-invalid {
+  color: @brand-danger;
+}
+
+form .ng-valid.ng-dirty {
+  border-color: @brand-success;
+}
+
+//form *:not(.novalidate) > .ng-valid.ng-dirty {
+//  border-color: @validColor;
+//}
+
+//.md-text-float .ng-invalid.ng-dirty{
+//  border-color:#FA787E
+//}
+
+.nav, .pagination, .carousel, .panel-title a {
+  cursor: pointer;
+}
+
+.btn-link, .btn-link:hover, .btn-link:active {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+header {
+  .sidenav-btn {
+    cursor: pointer;
+    font-size: 28px;;
+  }
+}
+
+.section-welcome-list {
+  .user-caption {
+    padding: 5px 7px;
+  }
+  .anim-thumb-link {
+    display: block;
+    background-color: #FFF;
+    margin: 0 0 20px 0;
+    h6 {
+      margin: 0;
+      padding: 10px;
+      .creator {
+        margin-right: 3px;
+      }
+    }
+  }
+}
+
+.sidenav-right {
+  .sidenav-content {
+    .portrait-link {
+      margin: 15px 30px;
+      display: block;
+    }
+    .md-button {
+      padding: 20px;
+      text-align: left;
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+footer {
+  opacity: 1;
+  text-align: center;
+  background-color: @bgColor;
+  .footer-social-btns {
+    padding-left: 0;
+    margin: 10px 0;
+    li {
+      padding: 5px 8px;
+    }
+  }
+
+  .footer-links {
+    padding-left: 0;
+    margin-top: 10px;
+    li {
+      padding: 0 5px;
+    }
+  }
+  .twitter-share-button {
+    width: 110px !important;
+  }
+  .twitter-follow-button {
+    width: 135px !important;
+  }
+}
+
+
+.md-whiteframe-z1, .md-whiteframe-z2 {
+  -webkit-transition: 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000) box-shadow;
+  -moz-transition: 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000) box-shadow;
+  -ms-transition: 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000) box-shadow;
+  -o-transition: 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000) box-shadow;
+  transition: 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000) box-shadow;
+}
+
+.md-whiteframe-z1:hover {
+  .md-whiteframe-z2();
+}
+
+.form-control.input-number-sm {
+  width: 50px;
+  padding: 0 0 0 7px;
+}
+
+
+.md-input-number-sm {
+  width: 50px;
+}
+
+.md-input-number-md {
+  width: 60px;
+}
+

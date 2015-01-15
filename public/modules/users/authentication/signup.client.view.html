@@ -1,0 +1,59 @@
+<div class="col-xs-12 text-center">
+  <a href="/api/auth/facebook" target="_self" class="no-dec">
+    <img src="/modules/users/img/buttons/facebook.png">
+  </a>
+  <a href="/api/auth/twitter" target="_self" class="no-dec">
+    <img src="/modules/users/img/buttons/twitter.png">
+  </a>
+  <a href="/api/auth/google" target="_self" class="no-dec">
+    <img src="/modules/users/img/buttons/google.png">
+  </a>
+  <a href="/api/auth/github" target="_self" class="no-dec">
+    <img src="/modules/users/img/buttons/github.png">
+  </a>
+</div>
+<div class="col-xs-12">
+  <h3 class="col-md-12 text-center">Or with your email</h3>
+  <md-input-container>
+    <label>Email</label>
+    <input name="email" ng-model="vm.credentials.email" type="email" required>
+
+    <div ng-if="userForm.email.$dirty" ng-messages="userForm.email.$error">
+      <div ng-message="email">This is not correct format of an email.</div>
+      <div ng-message="required">Email is required</div>
+    </div>
+  </md-input-container>
+
+  <md-input-container>
+    <label>Username</label>
+    <input name="username" ng-model="vm.credentials.username" ng-minlength="2" required>
+
+    <div ng-if="userForm.username.$dirty" ng-messages="userForm.username.$error">
+      <div ng-message="minlength">Username should be at least 2 characters long</div>
+      <div ng-message="required">Username is required</div>
+    </div>
+  </md-input-container>
+
+  <md-input-container>
+    <label>Password</label>
+    <input name="password" ng-model="vm.credentials.password" type="password" required ng-minlength="6">
+    <div ng-if="userForm.password.$dirty" ng-messages="userForm.password.$error">
+      <div ng-message="minlength">Password should be at least 6 characters long</div>
+      <div ng-message="required">Password is required</div>
+    </div>
+  </md-input-container>
+
+  <md-input-container>
+    <label>Password</label>
+    <input name="repeatPassword" ng-model="vm.credentials.repeatPassword" type="password"
+           data-dp-repeat-password="vm.credentials.password" required ng-minlength="6">
+    <div ng-if="userForm.repeatPassword.$dirty" ng-messages="userForm.repeatPassword.$error">
+      <div ng-message="mismatch">Passwords do not match</div>
+    </div>
+  </md-input-container>
+</div>
+<div class="text-right mar-top-15">
+  <md-button data-ng-click="vm.sign('up')" data-ng-disabled="!userForm.$valid"
+             aria-label="Sign In" class="md-primary">Sign Up
+  </md-button>
+</div>

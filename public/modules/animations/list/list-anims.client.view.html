@@ -1,0 +1,48 @@
+<div class="form-group">
+  <select data-ng-options="opt.value as opt.name for opt in vm.sortOptions"
+          data-ng-model="vm.listStorage.sort"
+          data-ng-change="vm.changeList()"
+          class="form-control mar-bot-15">
+  </select>
+</div>
+<h5 data-ng-show="!vm.loading && !vm.anims.length">No animations found</h5>
+<ul class="list-unstyled anim-list">
+  <li data-ng-repeat="anim in vm.anims" class="mar-bot-15 anim-list-item">
+    <div class="row hmar-0" layout="row" layout-align="center center">
+      <a data-dp-anim-href="{{anim._id}}"
+         class="list-thumb col-lg-6 col-md-12 col-xs-6 vmar-lg-0 no-dec bg-white light-border">
+        <img class=" img-responsive" data-dp-thumb="{{anim._id}}" data-dp-thumb-type="anims"></a>
+
+      <div class="col-lg-6 col-md-12 col-xs-6 font-lg-if-sm pad-rig-0">
+        <a class="ellipsis pull-left w-100 h6 item-title font-lg-if-sm"
+           data-dp-anim-href="{{anim._id}}">{{anim.title | characters:35}}</a>
+
+        <div><i class="icon-film font-lg-if-sm"></i> {{anim.framesCount}}</div>
+        <div><i class="icon-star font-lg-if-sm"></i> {{anim.likesCount}}</div>
+        <span>by <a class="font-lg-if-sm" data-dp-user-href="{{anim.creator}}">{{anim.creator}}</a></span>
+      </div>
+    </div>
+  </li>
+</ul>
+<nav data-ng-show="!vm.loading && vm.pageCount > 1" class="text-center form-group">
+  <div class="row">
+    <div class="col-xs-12">
+      <pagination first-text="&laquo;" last-text="&raquo;" max-size="5" direction-links="false" boundary-links="true"
+                  total-items="vm.totalCount" ng-model="vm.listStorage.page" items-per-page="vm.listPageSize"
+                  ng-change="vm.changeList()"></pagination>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <md-input-container class="inline">
+        <input type="number" step="1" ng-model="vm.listStorage.page" min="1" max="vm.pageCount"
+               required ng-model-options="{ debounce: 800 }" ng-change="vm.changeList()"
+               class="inline md-input-number-sm">
+      </md-input-container>
+      <span class="label label-primary">/<span>{{vm.pageCount}}</span></span>
+    </div>
+  </div>
+</nav>
+<div data-ng-show="!vm.loading && vm.listStorage.sort === 'random'" class="text-center">
+  <md-button data-ng-click="vm.changeList()" aria-label="Refresh animation list">Refresh</md-button>
+</div>

@@ -1,0 +1,125 @@
+<h2 class="vmar-0 mar-bot-10">{{::vm.current.anim.title}}&nbsp;</h2>
+<div class="row anim-player-screen-wrap">
+  <div class="col-xs-12">
+    <div class="anim-player-screen center-block md-whiteframe-z1">
+      <div data-ng-show="vm.loading" data-dp-anim-loader></div>
+      <img data-ng-hide="vm.loading" data-ng-click="vm.player.play()" class="img-responsive anim-player-img"
+           data-ng-src="{{vm.player.frames[vm.player.currentFrame] | dpRasterize}}">
+    </div>
+  </div>
+  <div class="col-xs-12 anim-player-controls">
+    <div class="row mar-bot-15">
+      <div class="col-xs-12 player-slider-wrap" data-ng-class="{'vis-hidden' : vm.player.playing}">
+        <md-slider min="0" max="{{vm.player.lastFrame()}}"
+                   data-ng-model="vm.player.currentFrame"
+                   aria-label="Frame position slider"></md-slider>
+      </div>
+    </div>
+    <div>
+      <div class="col-sm-9 col-sm-push-3 col-xs-12 md-whiteframe-z1 bg-white pad-top-15">
+        <div class="row">
+          <div class="col-xs-12 col-sm-2 text-center">
+            <h5 class="anim-current-frame">{{vm.player.currentFrame + 1}}/{{vm.player.lastFrame() + 1}}</h5>
+          </div>
+          <div class="col-xs-12 col-sm-3 hpad-0 text-center">
+            <div class="text-center btn-group">
+              <button data-ng-click="vm.player.next(-1)" type="button" class="btn btn-default">
+                <i class="icon-backward"></i>
+              </button>
+              <button data-ng-click="vm.player.play()" type="button" class="btn btn-default">
+                <i data-ng-class="{'icon-play' : !vm.player.playing, 'icon-pause' : vm.player.playing}">
+                </i>
+              </button>
+              <button data-ng-click="vm.player.next(1)" type="button" class="btn btn-default">
+                <i class="icon-forward"></i>
+              </button>
+            </div>
+          </div>
+          <div class="btn-group col-xs-12 col-sm-3 text-center">
+            <div class="text-center">
+              <button data-ng-model="vm.player.settings.repeat" data-btn-checkbox
+                      type="button" class="btn btn-default">
+                <i class="icon-repeat"></i>
+              </button>
+              <button data-ng-model="vm.player.settings.backwards" data-btn-checkbox
+                      type="button" class="btn btn-default">
+                <i class="icon-arrow-left"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4" data-tooltip-placement="bottom"
+               data-tooltip="Animation speed" data-tooltip-popup-delay="1000">
+
+            <h5 class="text-center mar-top-15 visible-xs">Animation speed</h5>
+            <md-slider id="player-speed-slider" discrete min="1" max="10" step="1"
+                       data-ng-model="vm.player.settings.speed"
+                       aria-label="Animation speed" class="md-accent"></md-slider>
+          </div>
+          <div class="col-xs-12  player-content-section">
+            <h5 class="publish-date">
+              <small>Published: <span>{{vm.current.anim.datePublish | timeAgo}}</span>
+              </small>
+            </h5>
+            <p>{{::vm.current.anim.desc}}</p>
+          </div>
+          <div class="col-xs-12  player-content-section">
+            <div class="row" layout="row" layout-align="center center">
+              <div class="col-xs-6" data-ng-switch="vm.current.anim.likesCount">
+                <h5 data-ng-switch-when="0">
+                  Nobody liked this yet, be first!
+                </h5>
+                <h4 data-ng-switch-default>
+                  <ng-pluralize count="vm.current.anim.likesCount" when="{'one' : '1 Awesome!',
+                          'other' : '{} Awesomes!'}"></ng-pluralize>
+                </h4>
+              </div>
+              <div class="col-xs-6 text-right">
+                <md-button
+                    data-tooltip="{{vm.auth.user ? '' :
+                            'You need to be logged in to like an animation'}}"
+                    data-tooltip-placement="top"
+                    data-ng-click="vm.likeAnim()"
+                    class="md-primary md-raised like-btn btn-lg-if-xs" aria-label="Like Animation">
+                  <i class="icon-star"></i>
+                  <span>{{vm.current.anim.liked ? 'Unlike' : 'Awesome!'}}</span>
+                </md-button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 hpad-0 vmar-10">
+            <div class="col-xs-6 col-sm-3 text-center vmar-5">
+              <a facebook class="facebookShare" data-url="{{vm.absUrl}}" data-shares="shares">{{ vm.shares }}</a>
+            </div>
+            <div class="col-xs-6 col-sm-3 text-center vmar-5">
+              <a twitter data-lang="en" data-count="horizontal" data-url="{{vm.absUrl}}" data-via="disapainted"
+                 data-size="medium" data-text="{{vm.getShareText()}}"></a>
+            </div>
+            <div class="col-xs-6 col-sm-3 text-center vmar-5">
+              <div pintrest data-href="{{vm.absUrl}}" data-description="{{vm.getShareText()}}"
+                   data-img="http://plnkr.co/img/plunker.png" data-pin-do="buttonPin"
+                   data-pin-config="beside"></div>
+            </div>
+            <div class="col-xs-6 col-sm-3 text-center vmar-5">
+              <div gplus class="g-plus" data-size="tall" data-annotation="bubble" data-href="{{vm.absUrl}}"
+                   data-action="share"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-sm-pull-9 col-xs-12 anim-creator-wrap">
+        <a data-dp-user-href="{{::vm.current.creator._id}}"
+           class="md-whiteframe-z1 no-dec display-block gray-dark bg-white">
+          <img class="img-responsive w-100" data-dp-thumb="{{::vm.current.creator._id}}"
+               data-dp-thumb-type="users">
+
+          <div class="hpad-10 pad-top-5 pad-bot-10 anim-creator-caption">
+            <h5 class="ellipsis mar-bot-5">{{::vm.current.creator._id}}</h5>
+            <h6 class="mar-0"><i class="icon-star"></i> {{vm.current.creator.likesCount}}</h6>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div data-ng-include="'/modules/animations/comments/comments-anim.client.view.html'"></div>
+

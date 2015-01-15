@@ -1,0 +1,11 @@
+{
+  "deploys" : [
+    {
+      "name"    : "Disapainted Deploy",
+      "type"    : "github",
+      "repo"    : "https://github.com/madvas/disapainted",
+      "command" : "grunt pull-production",
+      "branch"  : "master"
+    }
+  ]
+}

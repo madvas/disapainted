@@ -1,0 +1,57 @@
+<div class="container user-edit-portrait">
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <h2>Draw yourself!</h2>
+    </div>
+    <div class="col-xs-12">
+      <div class="col-xs-12">
+        <div class="md-whiteframe-z2 user-edit-portrait-canvas-wrap bg-white">
+          <canvas data-dp-portrait data-ng-mouseleave="vm.t.mouseLeave()"></canvas>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="user-edit-portrait-tools">
+          <div class="btn-group mar-rig-5 pull-left">
+            <button data-colorpicker="rgba" data-colorpicker-position="bottom"
+                    data-ng-model="vm.t.strokeColor"
+                    type="button" class="btn btn-default" data-tooltip-append-to-body
+                    data-tooltip="Brush Color" data-tooltip-popup-delay="1000">
+              <i class="icon-brush"></i>
+            </button>
+            <button data-colorpicker="rgba" data-colorpicker-position="bottom"
+                    data-ng-model="vm.background.fillColor" data-ng-change="vm.p.view.draw()"
+                    type="button" class="btn btn-default" data-tooltip-append-to-body
+                    data-tooltip="Background Color" data-tooltip-popup-delay="1000">
+              <i class="icon-paint"></i>
+            </button>
+          </div>
+          <div class="pull-left input-group brush-width-group mar-rig-5" data-tooltip="Brush Thickness"
+               data-tooltip-popup-delay="1000">
+            <span class="input-group-addon"><i class="icon-circle"></i></span>
+            <input data-ng-model="vm.t.strokeWidth" min="1" max="100" type="number"
+                   class="form-control inline input-number-sm w-100" data-dp-valid-number>
+          </div>
+          <div class="btn-group pull-left">
+            <button data-tooltip="Reset" data-tooltip-popup-delay="1000"
+                    data-tooltip-append-to-body
+                    data-ng-click="vm.reset()"
+                    class="btn btn-default">
+              <i class="icon-restore"></i>
+            </button>
+            <button data-tooltip="Clear" data-tooltip-popup-delay="1000"
+                    data-tooltip-append-to-body
+                    data-ng-click="vm.clear()"
+                    class="btn btn-default">
+              <i class="icon-remove"></i>
+            </button>
+          </div>
+          <md-button data-ng-click="vm.save()" class="pull-right md-primary md-raised mar-top-15"
+                     aria-label="Save Portrait">
+            <i class="icon-save"></i> Save
+          </md-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

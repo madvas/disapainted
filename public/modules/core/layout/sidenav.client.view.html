@@ -1,0 +1,20 @@
+<md-sidenav md-component-id="rightSidenav" class="md-sidenav-right md-whiteframe-z2 sidenav-right">
+  <span data-ng-controller="SidenavController as vm">
+  <md-toolbar class="md-accent">
+    <h3 class="md-toolbar-tools">{{vm.auth.user._id || 'Welcome'}}</h3>
+  </md-toolbar>
+    <md-content class="sidenav-content">
+      <md-button data-ng-if="vm.auth.user" data-ng-href="/users/{{vm.auth.user._id}}">My Animations</md-button>
+      <md-button data-ng-if="vm.auth.user" data-ng-href="/settings/profile">Change Profile</md-button>
+      <md-button data-ng-if="vm.auth.user" data-ng-href="/settings/password">Change password</md-button>
+
+      <md-button data-ng-if="!vm.auth.user" data-ng-href="/signin">Sign In</md-button>
+      <md-button data-ng-if="!vm.auth.user" data-ng-href="/signup">Sign Up</md-button>
+
+      <md-button data-ng-href="/about">About</md-button>
+      <md-button data-ng-href="/contact">Contact</md-button>
+      <md-button data-ng-if="vm.auth.user" data-ng-href="/api/auth/signout" target="_self" class="md-warn">Sign Out</md-button>
+      <md-button  data-ng-click="vm.closeSidenav()" class="md-primary">Close</md-button>
+    </md-content>
+    </span>
+</md-sidenav>

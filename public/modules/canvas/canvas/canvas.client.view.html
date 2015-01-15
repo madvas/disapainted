@@ -1,0 +1,399 @@
+<section class="section-canvas">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 col-md-9 col-xs-12 text-center">
+        <div class="canvas-wrap md-whiteframe-z2 mar-bot-15">
+          <div data-ng-show="vm.loading" data-dp-anim-loader></div>
+          <canvas data-ng-show="!vm.loading" data-dp-canvas></canvas>
+        </div>
+        <div class="canvas-thumbnails-wrap">
+          <div class="row">
+            <div data-dp-canvas-thumbnails data-dp-frames-count="{{vm.f.framesCount}}"
+                 data-dp-current-frame-index="{{vm.f.currentFrameIndex}}"
+                 class="col-xs-12 canvas-thumbnails">
+              <ul class="list-inline mar-bot-15">
+                <li data-ng-repeat="(key, frame) in vm.f.frames | sortBy:'order' track by frame.order"
+                    data-ng-click="vm.f.currentFrameIndex = key">
+                  <img data-ng-src="{{frame | dpRasterize}}"
+                       data-ng-class="{'current-frame' : vm.f.currentFrame == frame,
+                                 'copied-frame' : vm.f.clipboardFrame == frame}"
+                       class="md-whiteframe-z1">
+
+                  <div class="frame-order">{{frame.order + 1}}</div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-xs-10 col-xs-offset-1 mar-bot-15">
+              <md-slider id="player-speed-slider" discrete min="0" max="{{vm.f.framesCount - 1}}" step="1"
+                         data-ng-model="vm.f.currentFrameIndex"
+                         aria-label="Frame thumbnails position"></md-slider>
+            </div>
+            <div class="col-xs-12 row" data-ng-if="!vm.loading">
+              <div class="col-xs-2">
+                <div class="btn-group">
+                  <button data-tooltip-popup-delay="1000" data-tooltip="{{vm.f.playing ? 'Stop (a)' : Play (a)}}"
+                          data-ng-click="vm.c.initPlaying()"
+                          type="button" class="btn btn-default">
+                    <i data-ng-class="{'icon-stop' : vm.f.playing}" class="icon-play"></i>
+                  </button>
+                  <button data-ng-model="vm.f.repeat" data-btn-checkbox
+                          type="button" class="btn btn-default" data-tooltip-popup-delay="1000" data-tooltip="Repeat">
+                    <i class="icon-repeat"></i></button>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="btn-group">
+                  <button data-ng-click="vm.f.newFrame()" data-tooltip-popup-delay="1000"
+                          data-tooltip="Add new frame (space)"
+                          type="button" class="btn btn-default"><i
+                      class="icon-add-file"></i></button>
+                  <button data-ng-click="vm.f.clipboardFrame = vm.f.currentFrame" type="button"
+                          class="btn btn-default" data-tooltip-popup-delay="1000"
+                          data-tooltip="Copy frame to clipboard (shift + c)">
+                    <i class="icon-copy2"></i></button>
+                  <button data-ng-click="vm.f.pasteFrame(vm.f.clipboardFrame)" type="button" class="btn btn-default"
+                          data-tooltip-popup-delay="1000" data-tooltip="Paste frame from clipboard (shift + v)">
+                    <i class="icon-paste2"></i></button>
+                  <button data-ng-click="vm.f.pasteFrame(vm.f.frames[vm.f.currentFrameIndex - 1])" type="button"
+                          class="btn btn-default" data-tooltip-popup-delay="1000"
+                          data-tooltip="Paste previous frame (shift + b)">
+                    <i class="icon-copy3"></i></button>
+                  <button data-ng-click="vm.c.clearCanvas()" type="button" data-tooltip-popup-delay="1000"
+                          data-tooltip="Clear frame"
+                          class="btn btn-default"><i class="icon-remove"></i></button>
+                  <button data-ng-click="vm.f.removeFrame(vm.f.currentFrame)" data-tooltip-popup-delay="1000"
+                          data-tooltip="Remove frame"
+                          type="button" class="btn btn-default">
+                    <i class="icon-remove-file"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <div class="input-group" data-tooltip-popup-delay="1000" data-tooltip="Repeat Frames. The value
+                determines how many times the frame should be repeated when played. This can be used to create
+                pauses in the animation without having to create identical consecutive frames.">
+                  <span class="input-group-addon"><i class="icon-repeat-one"></i></span>
+                  <input data-dp-valid-number type="number" min="1" max="999"
+                         data-ng-model="vm.f.currentFrame.repeat" class="form-control input-number-sm"/>
+                </div>
+              </div>
+              <div class="col-xs-1">
+                <button data-colorpicker data-colorpicker-position="top"
+                        data-ng-model="vm.c.background.fillColor" data-ng-change="vm.c.backgroundChange()"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Background Color">
+                  <i class="icon-paint"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6 tool-panel-wrap selected-object-wrap">
+        <div class="md-whiteframe-z1 tool-panel">
+          <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
+              <span>Selected Object</span>
+            </div>
+          </md-toolbar>
+          <md-content class="md-padding tool-panel-content selected-object">
+            <div data-ng-if="!vm.loading" class="row text-center">
+              <div class="col-xs-12">
+                <select data-ng-options="opt as opt for opt in vm.dpObjects.objectTypes"
+                        data-ng-model="vm.newObjectType"
+                        class="form-control mar-bot-5">
+                </select>
+              </div>
+              <div class="col-xs-12" data-ng-switch="vm.newObjectType">
+                <div data-ng-switch-when="Picture">
+                  <md-button data-ng-click="vm.choosePictureDialog($event)" class="pull-right w-100 mar-bot-10">
+                    <i class="icon-photo"></i> Choose Picture
+                  </md-button>
+                </div>
+                <div data-ng-switch-when="Text">
+                  <md-button data-ng-click="vm.writeTextDialog($event)" class="pull-right w-100 mar-bot-10">
+                    <i class="icon-text-format"></i> Write Text
+                  </md-button>
+                </div>
+                <div data-ng-switch-when="Import SVG">
+                  <button data-ng-file-select data-ng-model="vm.importedSVG" data-accept="image/svg+xml"
+                             data-ng-file-change="vm.importSVG($files)" data-ng-multiple="true"
+                             class="btn btn-default w-100 mar-bot-10 import-svg-btn">
+                    <i class="icon-svg"></i> Choose File
+                  </button>
+                </div>
+                <div data-ng-switch-default>
+                  <md-button data-ng-click="vm.dpObjects.createObject(vm.newObjectType)"
+                             class="pull-right w-100 mar-bot-10">
+                    <i class="icon-add"></i> Add new
+                  </md-button>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <button data-ng-click="vm.c.cloneSelected()" data-ng-disabled="!vm.c.selected.objects.length"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Clone Object (c)">
+                  <i class="icon-duplicate"></i></button>
+                <button data-ng-click="vm.c.centerSelected()" data-ng-disabled="!vm.c.selected.objects.length"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Center Object (v)"><i class="icon-center"></i></button>
+                <button data-ng-click="vm.c.flipSelected()" data-ng-disabled="!vm.c.selected.objects.length"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Flip Object (f)">
+                  <i class="icon-flip"></i></button>
+              </div>
+              <div class="col-xs-12">
+                <button data-ng-click="vm.c.joinMode()" data-ng-disabled="vm.c.selected.objects.length !== 1"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Join Object (j)">
+                  <i data-ng-class="{'icon-split' : vm.c.isSelectedObjectJoined()}" class="icon-join"></i>
+                </button>
+                <button data-ng-click="vm.c.changeSelectedOrder('bringToFront')" data-tooltip-popup-delay="1000"
+                        data-tooltip="Bring to front (g)"
+                        data-ng-disabled="!vm.c.selected.objects.length" type="button" class="btn btn-default">
+                  <i class="icon-bring-to-front"></i></button>
+                <button data-ng-click="vm.c.changeSelectedOrder('sendToBack')" data-tooltip-popup-delay="1000"
+                        data-tooltip="Send to back (h)"
+                        data-ng-disabled="!vm.c.selected.objects.length" type="button" class="btn btn-default">
+                  <i class="icon-send-to-back"></i></button>
+              </div>
+              <div class="col-xs-12">
+                <button data-colorpicker="rgba" data-colorpicker-position="bottom"
+                        data-ng-change="vm.c.setSelectedColor('Stroke', vm.c.selected.objects[0].strokeColor)"
+                        data-ng-model="vm.c.selected.objects[0].strokeColor" type="button" class="btn btn-default"
+                        data-ng-disabled="!vm.c.selected.objects.length" data-tooltip-popup-delay="1000"
+                        data-tooltip="Object Stroke Color">
+                  <i class="icon-brush"></i></button>
+                <button data-colorpicker="rgba" data-colorpicker-position="bottom"
+                        data-ng-change="vm.c.setSelectedColor('Fill', vm.c.selected.objects[0].fillColor)"
+                        data-ng-model="vm.c.selected.objects[0].fillColor" type="button" class="btn btn-default"
+                        data-ng-disabled="!vm.c.selected.objects.length" data-tooltip-popup-delay="1000"
+                        data-tooltip="Object Fill Color">
+                  <i class="icon-paint"></i></button>
+                <button data-ng-click="vm.c.uniteSelected()" data-ng-disabled="!vm.c.selected.objects.length"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Unite Object. This will transform all joined objects into a single object.
+                        This action is irreversible.">
+                  <i class="icon-group"></i></button>
+                <button data-ng-click="vm.c.copySelected()" data-ng-disabled="!vm.c.selected.objects.length"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Copy Selected Object(s) to clipboard (shift + z)">
+                  <i class="icon-copy2"></i></button>
+                <button data-ng-click="vm.c.pasteSelected()" data-ng-disabled="!vm.c.clipboard.length"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Paste Object(s) from clipboard. Note you can copy object(s) from this animation
+                        and then paste it into another animation as well! (shift + x)">
+                  <i class="icon-paste2"></i></button>
+                <button data-ng-click="vm.c.removeSelected()" data-ng-disabled="!vm.c.selected.objects.length"
+                        type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                        data-tooltip="Remove Object (del)">
+                  <i class="icon-highlight-remove"></i></button>
+              </div>
+              <div class="col-xs-12 mar-top-10 text-left hpad-0 pad-lef-10">
+                <i class="icon-size" data-tooltip-popup-delay="1000" data-tooltip="Object Size"></i>
+                <md-input-container class="inline">
+                  <input type="number" step="1"
+                         data-ng-model="vm.c.selected.objects[0].data.scale.x"
+                         data-ng-disabled="!vm.c.selected.objects.length"
+                         data-tooltip-popup-delay="1000" data-tooltip="Object Width (o) (hold shift for decrease)"
+                         data-ng-change="vm.c.setSelectedScale(vm.c.selected.objects[0].data.scale.x, 'x')"
+                         class="inline md-input-number-sm">
+                </md-input-container>
+                <md-input-container class="inline">
+                <input type="number" step="1"
+                       data-ng-change="vm.c.setSelectedScale(vm.c.selected.objects[0].data.scale.y, 'y')"
+                       data-ng-model="vm.c.selected.objects[0].data.scale.y"
+                       data-ng-disabled="!vm.c.selected.objects.length"
+                       data-tooltip-popup-delay="1000" data-tooltip="Object Height (p) (hold shift for decrease)"
+                       class="inline md-input-number-sm">
+                </md-input-container>
+                <i data-ng-click="vm.c.objectScaleLock = !vm.c.objectScaleLock"
+                   data-ng-class="{'icon-lock-open' : !vm.c.objectScaleLock}"
+                   data-tooltip-popup-delay="1000"
+                   data-tooltip="{{vm.c.objectScaleLock ? 'Unlock' : 'Lock'}} dimensions ratio"
+                   class="scale-lock icon-lock">&nbsp;</i>
+              </div>
+              <div class="col-xs-6 mar-top-10 text-left hpad-0 pad-lef-10">
+                <i class="icon-expand"></i>
+                <md-input-container class="inline">
+                  <input type="number" step="1" min="0"
+                         data-ng-change="vm.c.setSelectedStrokeWidth(vm.c.selected.objects[0].strokeWidth)"
+                         data-ng-model="vm.c.selected.objects[0].strokeWidth"
+                         data-tooltip-popup-delay="1000" data-tooltip="Object Stroke Width (i) (hold shift for decrease)"
+                         data-ng-disabled="!vm.c.selected.objects.length"
+                         class="inline md-input-number-sm">
+                </md-input-container>
+              </div>
+              <div class="col-xs-6 mar-top-10 text-left hpad-0 pad-lef-10">
+                <i class="icon-circle"></i>
+                <md-input-container class="inline">
+                  <input type="number" step="1" min="0"
+                         data-ng-change="vm.c.objectHandleRadiusChange()"
+                         data-ng-model="vm.c.selected.objects[0].firstChild.data.handleRadius"
+                         data-tooltip-popup-delay="1000" data-tooltip="Change Selected Object(s) Handle Radius"
+                         class="inline md-input-number-sm">
+                </md-input-container>
+              </div>
+            </div>
+          </md-content>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6 hpad-lg-0 tool-panel-wrap">
+        <div class="md-whiteframe-z1 tool-panel">
+          <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
+              <span>Selected Segment</span>
+            </div>
+          </md-toolbar>
+          <md-content class="md-padding tool-panel-content selected-segment">
+            <div data-ng-if="!vm.loading" class="row text-center">
+              <div class="col-xs-12">
+                <button data-colorpicker="rgba" data-colorpicker-position="bottom"
+                        data-ng-show="vm.c.isPathSettingVisible('strokeColor');"
+                        data-ng-change="vm.c.draw()"
+                        data-ng-model="vm.c.selected.path.strokeColor" type="button"
+                        class="btn btn-default selectedPathSetting" data-tooltip-popup-delay="1000"
+                        data-tooltip="Path Stroke Color">
+                  <i class="icon-brush"></i></button>
+                <button data-colorpicker="rgba" data-colorpicker-position="bottom" data-tooltip-popup-delay="1000"
+                        data-tooltip="Path Fill Color"
+                        data-ng-show="vm.c.isPathSettingVisible('fillColor');"
+                        data-ng-change="vm.c.draw()"
+                        data-ng-model="vm.c.selected.path.fillColor" type="button"
+                        class="btn btn-default selectedPathSetting">
+                  <i class="icon-paint"></i></button>
+              </div>
+              <div data-ng-show="vm.c.isPathSettingVisible('scale')"
+                   class="col-xs-12 mar-top-10 text-left hpad-0 pad-lef-10 selectedPathSetting">
+                <i class="icon-size" data-tooltip-popup-delay="1000" data-tooltip="Path Size"></i>
+                <md-input-container class="inline">
+                  <input type="number" step="1"
+                         data-ng-change="vm.c.setSelectedPathScale(vm.c.selected.path.data.scale.x, 'x')"
+                         data-ng-model="vm.c.selected.path.data.scale.x"
+                         data-tooltip-popup-delay="1000" data-tooltip="Path Width (y) (hold shift for decrease)"
+                         class="inline md-input-number-sm">
+                </md-input-container>
+                <md-input-container class="inline">
+                  <input type="number" step="1"
+                         data-ng-change="vm.c.setSelectedPathScale(vm.c.selected.path.data.scale.y, 'y')"
+                         data-ng-model="vm.c.selected.path.data.scale.y"
+                         data-tooltip-popup-delay="1000" data-tooltip="Path Height (u) (hold shift for decrease)"
+                         class="inline md-input-number-sm">
+                </md-input-container>
+                <i data-ng-click="vm.c.pathScaleLock = !vm.c.pathScaleLock"
+                   data-ng-class="{'icon-lock-open' : !vm.c.pathScaleLock}"
+                   data-tooltip-popup-delay="1000"
+                   data-tooltip="{{vm.c.pathScaleLock ? 'Unlock' : 'Lock'}} dimensions ratio"
+                   class="scale-lock icon-lock">&nbsp;</i>
+              </div>
+              <div data-ng-show="vm.c.isPathSettingVisible('strokeWidth')"
+                   class="col-xs-6 mar-top-10 text-left hpad-0 pad-lef-10 selectedPathSetting">
+                <i class="icon-expand"></i>
+                <md-input-container class="inline">
+                  <input type="number" step="1" min="0"
+                         data-ng-change="vm.c.draw()"
+                         data-ng-model="vm.c.selected.path.strokeWidth"
+                         data-tooltip-popup-delay="1000" data-tooltip="Path Stroke Width (t) (hold shift for decrease)"
+                         class="inline md-input-number-sm">
+                </md-input-container>
+              </div>
+              <div data-ng-show="vm.c.isPathSettingVisible('handleRadius')"
+                   class="col-xs-6 mar-top-10 text-left hpad-0 pad-lef-10 selectedPathSetting">
+                <i class="icon-circle"></i>
+                <md-input-container class="inline">
+                  <input type="number" step="1" min="0"
+                         data-ng-change="vm.c.pathHandleRadiusChange()"
+                         data-ng-model="vm.c.selected.path.data.handleRadius"
+                         data-tooltip-popup-delay="1000" data-tooltip="Handle Radius"
+                         class="inline md-input-number-sm">
+                </md-input-container>
+              </div>
+              <div data-ng-show="vm.c.isPathSettingVisible('strokeCap');" class="col-xs-12 selectedPathSetting">
+                <md-radio-group data-ng-change="vm.c.draw()" data-ng-model="vm.c.selected.path.strokeCap"
+                                class="strokecap">
+                  <md-radio-button value="round" aria-label="Round strokeCap">round</md-radio-button>
+                  <md-radio-button value="square" aria-label="Square strokeCap">square</md-radio-button>
+                  <md-radio-button value="butt" aria-label="Butt strokeCap">butt</md-radio-button>
+                </md-radio-group>
+              </div>
+              <div data-ng-show="vm.c.isObjectSettingVisible('fontFamily')"
+                   class="col-xs-12 selectedPathSetting mar-top-10">
+                <select data-ng-options="opt as opt for opt in vm.dpConfig.fonts"
+                        data-ng-change="vm.c.draw()"
+                        data-ng-model="vm.c.selected.objects[0].fontFamily"
+                        class="form-control mar-bot-5">
+                </select>
+              </div>
+              <div data-ng-show="vm.c.isObjectSettingVisible('fontWeight')" class="col-xs-12 selectedPathSetting">
+                <select data-ng-options="opt as opt for opt in vm.dpConfig.fontWeights"
+                        data-ng-change="vm.c.draw()"
+                        data-ng-model="vm.c.selected.objects[0].fontWeight"
+                        class="form-control mar-bot-5">
+                </select>
+              </div>
+            </div>
+          </md-content>
+        </div>
+      </div>
+
+      <div data-ng-hide="vm.loading" class="col-lg-4 col-md-9 pad-top-15 hpad-0 tools-wrap">
+        <div class="col-xs-12 col-md-6 col-lg-12 text-right md-whiteframe-z1 bg-white pad-top-15 pad-bot-15">
+          <div class="col-xs-6 pad-lef-0">
+            <div class="input-group onion-layers-wrap">
+            <span class="input-group-btn">
+              <button data-ng-model="vm.c.onionLayers.enabled" data-btn-checkbox
+                      type="button" class="btn btn-default" data-tooltip-popup-delay="1000"
+                      data-tooltip="Onion Layers (w)">
+                <i class="icon-onion"></i></button>
+            </span>
+              <input data-ng-model="vm.c.onionLayers.count"
+                     data-ng-change="vm.c.showOnionLayers()" type="number"
+                     class="form-control input-number-sm" min="0" max="9" data-tooltip-popup-delay="1000"
+                     data-tooltip=""
+                     required="required" data-dp-valid-number>
+            </div>
+          </div>
+          <div class="col-xs-6 pad-rig-0">
+            <md-switch class="mar-bot-5 md-accent" data-ng-model="vm.c.showHandles" aria-label="Show Handles (e)">Show Handles (e)
+            </md-switch>
+            <md-switch class="md-accent" data-ng-model="vm.c.showAllPaths" aria-label="Show Paths (r)">Show Paths (r)
+            </md-switch>
+          </div>
+          <div class="col-xs-12 tips-wrap text-left hpad-0">
+            <div class="mar-bot-5">
+              <small>Tips:</small>
+            </div>
+            <div class="mar-bot-5">
+              <small>Hold alt while dragging red handle to scale object</small>
+            </div>
+            <div class="mar-bot-5">
+              <small>Hold ctrl while dragging red handle to scale segment</small>
+            </div>
+            <div class="mar-bot-5">
+              <small>Hold shift while dragging red handle to curve line</small>
+            </div>
+            <div class="mar-bot-5">
+              <small>Hold M to temporary enlarge small handles</small>
+            </div>
+            <div>
+              <small>Double click on any object handle will select only that object</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-push-2 col-md-4 col-lg-push-0 col-lg-12 save-buttons-wrap">
+          <md-button data-ng-click="vm.f.save()" data-ng-disabled="vm.f.isClean()"
+                     class="md-primary md-raised" aria-label="Save Frames">
+            <i class="icon-save"></i> Save
+          </md-button>
+          <md-button data-ng-disabled="!vm.isPublishable()" data-ng-click="vm.publishAnimDialog($event)"
+                     title="{{!vm.isPublishable() ? 'Your animation needs to be at least 10 frames long, before you can publish it' : ''}}"
+                     class="md-warn md-raised" aria-label="Publish Frames">
+            <i class="icon-publish"></i> Publish
+          </md-button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
