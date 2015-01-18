@@ -86,7 +86,8 @@ module.exports = function(grunt) {
       },
       material   : {
         files : {
-          'public/dist/customized/angular-material/angular-material.min.js' : 'public/dist/customized/angular-material/angular-material.js'
+          'public/dist/customized/angular-material/angular-material.min.js' :
+            'public/dist/customized/angular-material/angular-material.js'
         }
       }
     },
@@ -98,7 +99,8 @@ module.exports = function(grunt) {
       },
       material : {
         files : {
-          'public/dist/customized/angular-material/angular-material.min.css' : 'public/dist/customized/angular-material/angular-material.css'
+          'public/dist/customized/angular-material/angular-material.min.css' :
+            'public/dist/customized/angular-material/angular-material.css'
         }
       }
     },
