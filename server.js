@@ -45,5 +45,5 @@ console.log(chalk.green('Database:\t\t\t' + config.db.uri));
 if (process.env.NODE_ENV === 'secure') {
   console.log(chalk.green('HTTPs:\t\t\t\ton'));
 }
-console.log('test');
+console.log('testy');
 console.log('--');
