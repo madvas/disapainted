@@ -76,31 +76,29 @@ module.exports = function(grunt) {
       }
     },
     uglify           : {
-      options : {
+      options    : {
         mangle : false
       },
       production : {
-        files   : {
+        files : {
           'public/dist/build/application.min.js' : 'public/dist/build/application.js'
         }
       },
-      material : {
+      material   : {
         files : {
-          'public/dist/customized/angular-material/angular-material.min.js' :
-            'public/dist/customized/angular-material/angular-material.js'
+          'public/dist/customized/angular-material/angular-material.min.js' : 'public/dist/customized/angular-material/angular-material.js'
         }
       }
     },
     cssmin           : {
-      combine : {
+      combine  : {
         files : {
           'public/dist/build/application.min.css' : '<%= applicationCSSFiles %>'
         }
       },
       material : {
         files : {
-          'public/dist/customized/angular-material/angular-material.min.css' :
-            'public/dist/customized/angular-material/angular-material.css'
+          'public/dist/customized/angular-material/angular-material.min.css' : 'public/dist/customized/angular-material/angular-material.css'
         }
       }
     },
@@ -263,7 +261,9 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('dev', ['env:dev', 'lint', 'concurrent:dev']);
-  grunt.registerTask('production', ['build', 'env:production', 'forever:production:restart', 'webhook']);
+  grunt.registerTask('production', [
+    'build', 'env:production', 'forever:production:stop', 'forever:production:start', 'webhook'
+  ]);
   grunt.registerTask('production-stop', ['forever:production:stop']);
   grunt.registerTask('default', ['production']);
 
@@ -271,16 +271,20 @@ module.exports = function(grunt) {
   grunt.registerTask('lint', ['jshint', 'csslint']);
 
   // Build task(s).
-  grunt.registerTask('build', ['lint', 'env:dev', 'loadConfig', 'less:dev', 'ngAnnotate', 'uglify:production',
-                               'cssmin:combine']);
-  grunt.registerTask('buildLess', ['env:dev','loadConfig', 'less:dev']);
+  grunt.registerTask('build', [
+    'lint', 'env:dev', 'loadConfig', 'less:dev', 'ngAnnotate', 'uglify:production',
+    'cssmin:combine'
+  ]);
+  grunt.registerTask('buildLess', ['env:dev', 'loadConfig', 'less:dev']);
 
   // Test tasks.
   grunt.registerTask('test', ['env:test', 'mochaTest']);
 
   grunt.registerTask('migrateUsers', ['prompt:mysql', 'migrate']);
-  grunt.registerTask('pull-production', ['gitpull:master', 'build', 'auto_install:local', 'env:production',
-                                         'forever:production:restart']);
+  grunt.registerTask('pull-production', [
+    'gitpull:master', 'build', 'auto_install:local', 'env:production',
+    'forever:production:stop', 'forever:production:start'
+  ]);
   grunt.registerTask('webhook', ['create-deploys', 'shell:webhook']);
   grunt.registerTask('protractor', ['protractor:dev']);
 
