@@ -2,7 +2,7 @@
 
 ## About
 
-[Disapainted.com][http://disapainted.com] is a web application for creating pivot animations online. Pivot animations are funny 2D stick-man animations, which you easily create by dragging stick figure handles. This web app is heavily inspired by [Pivot Animator](http://pivotanimator.net/) desktop application.
+[Disapainted.com](http://disapainted.com) is a web application for creating pivot animations online. Pivot animations are funny 2D stick-man animations, which you easily create by dragging stick figure handles. This web app is heavily inspired by [Pivot Animator](http://pivotanimator.net/) desktop application.
 
 ## Contribution
 
