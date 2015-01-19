@@ -149,10 +149,10 @@ module.exports = function(grunt) {
         NODE_ENV : 'test'
       },
       production : {
-        NODE_ENV : 'production'
+        src : 'env-src.json'
       },
       dev        : {
-        NODE_ENV : 'development'
+        src : 'env-src-dev.json'
       }
     },
     mochaTest        : {

@@ -9,7 +9,7 @@ app/tests/coverage/
 .idea/
 config/sslcert/*.pem
 public/dist/build
-setEnvVars.fish
-setEnvVars.sh
 logs
 deploys.json
+env-src-dev.json
+env-src.json
