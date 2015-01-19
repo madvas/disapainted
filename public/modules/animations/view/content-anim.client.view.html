@@ -1,4 +1,4 @@
-<h2 class="vmar-0 mar-bot-10">{{::vm.current.anim.title}}&nbsp;</h2>
+<h2 class="vmar-0 mar-bot-10">{{vm.current.anim.title}}&nbsp;</h2>
 <div class="row anim-player-screen-wrap">
   <div class="col-xs-12">
     <div class="anim-player-screen center-block md-whiteframe-z1">
@@ -60,7 +60,7 @@
               <small>Published: <span>{{vm.current.anim.datePublish | timeAgo}}</span>
               </small>
             </h5>
-            <p>{{::vm.current.anim.desc}}</p>
+            <p>{{vm.current.anim.desc}}</p>
           </div>
           <div class="col-xs-12  player-content-section">
             <div class="row" layout="row" layout-align="center center">
@@ -107,13 +107,13 @@
         </div>
       </div>
       <div class="col-sm-3 col-sm-pull-9 col-xs-12 anim-creator-wrap">
-        <a data-dp-user-href="{{::vm.current.creator._id}}"
+        <a data-dp-user-href="{{vm.current.creator._id}}"
            class="md-whiteframe-z1 no-dec display-block gray-dark bg-white">
-          <img class="img-responsive w-100" data-dp-thumb="{{::vm.current.creator._id}}"
+          <img class="img-responsive w-100" data-dp-thumb="{{vm.current.creator._id}}"
                data-dp-thumb-type="users">
 
           <div class="hpad-10 pad-top-5 pad-bot-10 anim-creator-caption">
-            <h5 class="ellipsis mar-bot-5">{{::vm.current.creator._id}}</h5>
+            <h5 class="ellipsis mar-bot-5">{{vm.current.creator._id}}</h5>
             <h6 class="mar-0"><i class="icon-star"></i> {{vm.current.creator.likesCount}}</h6>
           </div>
         </a>
