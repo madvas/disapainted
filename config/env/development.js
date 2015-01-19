@@ -40,6 +40,7 @@ module.exports = {
     from    : process.env.MAILER_FROM || 'noreply@disapainted.com',
     options : {
       service : process.env.MAILER_SERVICE_PROVIDER || undefined,
+      port    : process.env.MAILER_PORT || 25,
       auth    : {
         user : process.env.MAILER_EMAIL_ID || undefined,
         pass : process.env.MAILER_PASSWORD || undefined
