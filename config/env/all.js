@@ -51,7 +51,7 @@ module.exports = {
         'public/lib/paper/dist/paper-core.js',
         'http://platform.twitter.com/widgets.js',
         '//assets.pinterest.com/js/pinit.js',
-        'public/lib/angular-socialshare/angular-socialshare.min.js',
+        'public/lib/angular-socialshare/angular-socialshare.js',
         'node_modules/jsonpack/main.js',
         'public/lib/angular-timeago/src/timeAgo.js',
         'public/lib/angulartics/dist/angulartics.min.js',

@@ -19,7 +19,7 @@
     vm.current = $scope.current;
     vm.auth = $scope.auth;
     vm.player = dpPlayer;
-    vm.absUrl = $location.absUrl();
+    vm.absUrl = $location.absUrl().split('#')[0];
     vm.activate = activate;
     vm.getShareText = getShareText;
     vm.likeAnim = likeAnim;
