@@ -23,7 +23,7 @@
   <textarea name="contactMsg" data-ng-model="co.message" columns="1"
             rows="3" md-maxlength="vm.contactConfig.msgLen" required></textarea>
 
-  <div ng-if="userForm.contactMsg.$dirty" ng-messages="userForm.contactMsg.$error">
+  <div ng-if="userForm.message.$dirty" ng-messages="userForm.message.$error">
     <div data-ng-message="required">Message text is required</div>
     <div data-ng-message="md-maxlength">Your message is too long</div>
   </div>
