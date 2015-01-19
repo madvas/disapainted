@@ -47,6 +47,14 @@ module.exports = function(db) {
   app.use(function(req, res, next) {
     res.locals.baseUrl = req.protocol + '://' + req.headers.host;
     res.locals.url = res.locals.baseUrl + req.url;
+    res.locals.imgUrl = res.locals.baseUrl;
+    if (!!~req.url.indexOf('/animations/')) {
+      res.locals.imgUrl += '/dist/thumbnails/anims/' + _.last(req.url.split('/')) + '.png';
+    } else if (!!~req.url.indexOf('/users/')) {
+      res.locals.imgUrl += '/dist/thumbnails/users/' + _.last(req.url.split('/')) + '.png';
+    } else {
+      res.locals.imgUrl += '/modules/core/img/disapainted.png';
+    }
     next();
   });
 
@@ -148,8 +156,8 @@ module.exports = function(db) {
     var certificate = fs.readFileSync('./config/sslcerts/cert.pem', 'utf8');
 
     return https.createServer({
-      key: privateKey,
-      cert: certificate
+      key  : privateKey,
+      cert : certificate
     }, app);
   }
 
