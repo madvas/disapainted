@@ -118,8 +118,8 @@
   function extendExceptionHandler($delegate, $analytics) {
     return function(exception, cause) {
       $analytics.eventTrack('error-js', {
-        category : location.pathname + ': ' + exception.message,
-        label    : navigator.userAgent + '\n' + exception.stack
+        category : exception.message,
+        label    : location.pathname + '\n' + navigator.userAgent + '\n' + exception.stack
       });
       $delegate(exception, cause);
     };
