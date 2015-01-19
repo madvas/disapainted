@@ -28,7 +28,7 @@ exports.contact = function(req, res) {
       html    : req.body.email + ': ' + req.body.message
     };
   smtpTransport.sendMail(mailOptions, function(err) {
-    if (err) return res.status(400).end({message : 'Sorry, message could not be sent'});
+    if (err) return res.status(400).send({message : 'Sorry, message could not be sent'});
     res.status(200).end();
   });
 };
