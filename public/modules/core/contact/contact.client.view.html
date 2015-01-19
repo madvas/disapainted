@@ -20,10 +20,10 @@
 </md-input-container>
 <md-input-container flex>
   <label>Message</label>
-  <textarea name="contactMsg" data-ng-model="co.message" columns="1"
+  <textarea name="contactMsg" data-ng-model="vm.contact.message" columns="1"
             rows="3" md-maxlength="vm.contactConfig.msgLen" required></textarea>
 
-  <div ng-if="userForm.message.$dirty" ng-messages="userForm.message.$error">
+  <div ng-if="userForm.contactMsg.$dirty" ng-messages="userForm.contactMsg.$error">
     <div data-ng-message="required">Message text is required</div>
     <div data-ng-message="md-maxlength">Your message is too long</div>
   </div>
