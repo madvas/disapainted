@@ -5,8 +5,10 @@
     .module('animations')
     .controller('ContentAnimationController', ContentAnimationController);
 
-  ContentAnimationController.$inject = ['$scope', '$location', 'dpResource', '$state', '$stateParams', '$anchorScroll',
-                                        'dpPlayer', '$analytics'];
+  ContentAnimationController.$inject = [
+    '$scope', '$location', 'dpResource', '$state', '$stateParams', '$anchorScroll',
+    'dpPlayer', '$analytics'
+  ];
 
   /* @ngInject */
   function ContentAnimationController($scope, $location, dpResource, $state, $stateParams, $anchorScroll, dpPlayer,

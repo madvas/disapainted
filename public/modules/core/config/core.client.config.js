@@ -143,7 +143,7 @@
 
   /* @ngInject */
   function initServices($FB, dpBrowseHistory) {
-    $FB.init('710048375757904');
+    $FB.init('150162395079841');
     dpBrowseHistory.init();
   }
 
