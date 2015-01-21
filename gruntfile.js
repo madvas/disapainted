@@ -214,40 +214,10 @@ module.exports = function(grunt) {
     /* jshint camelcase: false */
     auto_install     : {
       local : {}
-    },
-    prompt           : {
-      mysql : {
-        options : {
-          questions : [
-            {
-              config  : 'migrate.options.mysqlUser',
-              type    : 'input',
-              message : 'Enter mysql username: '
-            },
-            {
-              config  : 'migrate.options.mysqlPass',
-              type    : 'input',
-              message : 'Enter mysql password: '
-            },
-            {
-              config  : 'migrate.options.thumbsSrc',
-              type    : 'input',
-              message : 'Enter path from which user thumbnails should be moved to a new server path: '
-            },
-            {
-              config  : 'migrate.options.env',
-              type    : 'checkbox',
-              message : 'Choose environment',
-              choices : ['development', 'production']
-            }
-          ]
-        }
-      }
     }
   });
 
   require('load-grunt-tasks')(grunt);
-  grunt.loadTasks('migrate');
   // Making grunt default to force in order not to break the project.
   grunt.option('force', true);
 
@@ -282,7 +252,6 @@ module.exports = function(grunt) {
   // Test tasks.
   grunt.registerTask('test', ['env:test', 'mochaTest']);
 
-  grunt.registerTask('migrateUsers', ['prompt:mysql', 'migrate']);
   grunt.registerTask('pull-production', [
     'gitpull:master', 'build', 'auto_install:local', 'env:production',
     'forever:production:stop', 'forever:production:start'
