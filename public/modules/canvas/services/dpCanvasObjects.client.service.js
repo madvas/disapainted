@@ -36,7 +36,8 @@
       Circle       : createCircle,
       Picture      : createPicture,
       Text         : createText,
-      'Import SVG' : createSVG
+      'Import SVG' : createSVG,
+      'Import STK' : createSTK
     };
 
     me = {
@@ -75,14 +76,18 @@
       object.selected = c.showAllPaths;
     }
 
+    function setPathAdditionalData(path) {
+      _.extend(path.data, {
+        movable : true,
+        refId   : path.id
+      });
+      path.style = defaultStyle;
+    }
+
     function createMainPathGroup() {
       var path = new p.Path(new p.Point(0, 0));
-      path.data = {
-        movable     : true,
-        movableRoot : true,
-        refId       : path.id
-      };
-      path.style = defaultStyle;
+      setPathAdditionalData(path);
+      path.data.movableRoot = true;
       return new p.Group(path);
     }
 
@@ -111,11 +116,7 @@
           break;
       }
 
-      path.style = defaultStyle;
-      path.data = {
-        movable : true,
-        refId   : path.id
-      };
+      setPathAdditionalData(path);
       return new p.Group(path);
     }
 
@@ -179,10 +180,6 @@
       return stickmanGroup;
     }
 
-    function createStickman2() {
-
-    }
-
     function createPicture(opts) {
       var group,
         pictureGroup = createMainPathGroup(),
@@ -223,14 +220,90 @@
     }
 
     function createSVG(opts) {
-      var svgGroup = createMainPathGroup();
+      var group
+        , svgGroup  = createMainPathGroup();
       svgGroup.importSVG(opts.source);
-      var group = createNewPathGroup(svgGroup.bounds.bottomLeft, svgGroup.bounds.bottomRight, {absolute : true});
+      group = createNewPathGroup(svgGroup.bounds.bottomLeft, svgGroup.bounds.bottomRight, {absolute : true});
       svgGroup.firstChild.firstSegment.point = svgGroup.bounds.bottomLeft;
       group.firstChild.visible = false;
       group.addChild(svgGroup.children[1]);
       svgGroup.addChild(group);
       return svgGroup;
+    }
+
+    function createSTK(opts) {
+      var dataview, parent, limbCount, offset
+        , limbs = []
+        , stkGroup = createMainPathGroup();
+      dataview = new DataView(opts.source);
+      limbCount = dataview.getUint8(1);
+      for (var i = 0; i < limbCount; i++) {
+        offset = (i * 24) + 2;
+        limbs.push({
+          parent      : dataview.getUint8(offset),
+          id          : dataview.getUint8(offset + 1),
+          length      : dataview.getFloat32(offset + 4, true),
+          angle       : dataview.getFloat64(offset + 8, true) * (180 / Math.PI),
+          strokeWidth : dataview.getFloat32(offset + 16, true),
+          isCircle    : dataview.getUint8(offset + 20),
+          isStatic    : dataview.getUint8(offset + 21)
+        });
+      }
+      limbs = _.sortBy(limbs, 'parent');
+      _.each(limbs, function(limb) {
+        if (stkGroup.dpGetStkPathById(limb.id)) return;
+        if (limb.parent === 0) {
+          stkGroup.addChild(createStkGroup(stkGroup.firstChild.lastSegment.point, limb));
+        } else {
+          createStkLimb(limb, limbs, stkGroup);
+        }
+      });
+      return stkGroup;
+    }
+
+    function createStkLimb(limb, limbs, stkGroup) {
+      var limbGroup
+        , parent = stkGroup.dpGetStkPathById(limb.parent);
+      if (!parent) {
+        parent = createStkLimb(_.find(limbs, {id : limb.parent}), limbs, stkGroup);
+      }
+      limbGroup = createStkGroup(parent.dpGetOppositeSegment().point, limb);
+      parent.parent.addChild(limbGroup);
+      return limbGroup.firstChild;
+    }
+
+    function createStkGroup(srcPoint, limb) {
+      var path, center
+      , point = new p.Point({
+        length : limb.length,
+        angle  : limb.angle
+      });
+
+      if (!limb.isCircle) {
+        point = point.add(srcPoint);
+        path = new p.Path(srcPoint, point);
+      } else {
+        center = srcPoint.add(point.divide(2));
+        path = new p.Path.Circle({
+          center : center,
+          radius : limb.length / 2
+        });
+        path.rotate(limb.angle);
+      }
+      setPathAdditionalData(path);
+      path.strokeWidth = limb.strokeWidth;
+      path.data.stkId = limb.id;
+
+      if (limb.isStatic) {
+        path.data.handleRadius = 0;
+      } else if (limb.strokeWidth <= 4) {
+        path.data.handleRadius = 4;
+      } else if (limb.strokeWidth === 5) {
+        path.data.handleRadius = 5;
+      } else {
+        path.data.handleRadius = cfg.handleRadius;
+      }
+      return new p.Group(path);
     }
 
   }

@@ -98,23 +98,23 @@
       });
 
       p.Group.inject({
-        dpGetObjects               : function() {
+        dpGetObjects       : function() {
           var paths = this.getItems({data : {movableRoot : true}});
           return _.pluck(paths, 'parent');
         },
-        dpGetMovablePaths          : function() {
+        dpGetMovablePaths  : function() {
           return this.getItems({data : {movable : true}});
         },
-        dpGetOverlapping           : function(rect) {
+        dpGetOverlapping   : function(rect) {
           return this.getItems({overlapping : rect, data : {mainHandle : true}});
         },
-        dpGetTextItem              : function() {
+        dpGetTextItem      : function() {
           return this.getItem({'class' : p.PointText});
         },
-        dpIsObjectsRoot            : function() {
+        dpIsObjectsRoot    : function() {
           return this.name === 'objectsRoot';
         },
-        dpGetObjectsRoot           : function() {
+        dpGetObjectsRoot   : function() {
           var item = this.getItem({name : 'objectsRoot'});
           if (!item) {
             item = new p.Group();
@@ -123,14 +123,14 @@
           }
           return item;
         },
-        dpGetHandlesRoot           : function() {
+        dpGetHandlesRoot   : function() {
           return this.getItem({name : 'handlesRoot'});
         },
-        dpGetReferencePath         : function(path) {
+        dpGetReferencePath : function(path) {
           if (!path) return;
           return this.getItem({data : {refId : path.data.refId}});
         },
-        dpChangeOrder              : function(direction) {
+        dpChangeOrder      : function(direction) {
           if (this.dpIsObjectsRoot()) return;
 
           if (!this.data.movableRoot) {
@@ -142,29 +142,36 @@
           }
           this.parent.dpChangeOrder(direction);
         },
-        dpScaleStrokeWidth         : function(ratio) {
+        dpScaleStrokeWidth : function(ratio) {
           _.each(this.dpGetMovablePaths(), function(path) {
             path.strokeWidth *= ratio;
           });
         },
-        dpReduce                   : function() {
+        dpReduce           : function() {
           var me = this;
           _.each(_.clone(this.children), function(child) {
             me.parent.addChild(child);
           });
           me.remove();
         },
-        dpGetReferenceable         : function() {
+        dpGetReferenceable : function() {
           return this.getItems({
             data : function(value) {
               return _.isNumber(value.refId);
             }
           });
         },
-        dpUpdateReferences         : function() {
+        dpUpdateReferences : function() {
           this.data.refId = this.id;
           _.each(this.dpGetReferenceable(), function(path) {
             path.data.refId = path.id;
+          });
+        },
+        dpGetStkPathById   : function(id) {
+          return this.getItem({
+            data : function(value) {
+              return value.stkId === id;
+            }
           });
         }
       });

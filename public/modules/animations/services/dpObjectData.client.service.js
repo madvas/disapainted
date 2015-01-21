@@ -39,6 +39,7 @@
         if (obj.data) {
           delete obj.data.handleId;
           delete obj.data.scale;
+          delete obj.data.stkId;
         }
       });
       return jsonpack.pack(jsonpack.JSON.stringify(objectData));

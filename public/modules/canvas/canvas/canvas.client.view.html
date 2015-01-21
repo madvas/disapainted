@@ -122,6 +122,15 @@
                     <i class="icon-svg"></i> Choose File
                   </button>
                 </div>
+                <div data-ng-switch-when="Import STK">
+                  <button data-ng-file-select data-ng-model="vm.importedSTK"
+                          data-ng-file-change="vm.importSTK($files)" data-ng-multiple="true"
+                          data-tooltip="Stk files for Pivot Animator v2 are currenly supported"
+                          data-tooltip-popup-delay="1000"
+                          class="btn btn-default w-100 mar-bot-10 import-svg-btn">
+                    <i class="icon-svg"></i> Choose File
+                  </button>
+                </div>
                 <div data-ng-switch-default>
                   <md-button data-ng-click="vm.dpObjects.createObject(vm.newObjectType)"
                              class="pull-right w-100 mar-bot-10">

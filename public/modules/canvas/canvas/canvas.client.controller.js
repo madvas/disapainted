@@ -32,6 +32,7 @@
     vm.choosePictureDialog = choosePictureDialog;
     vm.writeTextDialog = writeTextDialog;
     vm.importSVG = importSVG;
+    vm.importSTK = importSTK;
 
     activate();
 
@@ -67,6 +68,20 @@
 
     function isPublishable() {
       return vm.f.framesCount >= 10;
+    }
+
+    function importSTK(files) {
+      _.each(files, function(file) {
+        if (file.name.split('.').pop() !== 'stk') {
+          dpToast.danger(file.name + ' doesn\'t seem like .stk file. Stk files are created in Pivot Animator software');
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          dpCanvasObjects.createObject('Import STK', {source : e.target.result});
+        };
+        reader.readAsArrayBuffer(file);
+      });
     }
 
     function importSVG(files) {
