@@ -54,7 +54,7 @@
       uniteSelected            : uniteSelected,
       copySelected             : copySelected,
       pasteSelected            : pasteSelected,
-      importObjects            : importObject,
+      importObject             : importObject,
       setSelectedScale         : setSelectedScale,
       setSelectedStrokeWidth   : setSelectedStrokeWidth,
       setSelectedColor         : setSelectedColor,
@@ -459,11 +459,14 @@
       draw();
     }
 
-    function importObject(object) {
+    function importObject(object, forceCenter) {
       var newObject;
       project.activeLayer.importJSON(object);
       newObject = project.activeLayer.lastChild;
       me.objects.addChild(newObject);
+      if (forceCenter) {
+        newObject.position = p.view.center;
+      }
       createHandles(newObject);
       return newObject;
     }

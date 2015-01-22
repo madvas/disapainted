@@ -99,42 +99,40 @@
           <md-content class="md-padding tool-panel-content selected-object">
             <div data-ng-if="!vm.loading" class="row text-center">
               <div class="col-xs-12">
-                <select data-ng-options="opt as opt for opt in vm.dpObjects.objectTypes"
-                        data-ng-model="vm.newObjectType"
+                <select data-ng-options="action.name group by action.type for action in vm.dpObjects.actions"
+                        data-ng-model="vm.selectedAction"
                         class="form-control mar-bot-5">
                 </select>
               </div>
-              <div class="col-xs-12" data-ng-switch="vm.newObjectType">
-                <div data-ng-switch-when="Picture">
-                  <md-button data-ng-click="vm.choosePictureDialog($event)" class="pull-right w-100 mar-bot-10">
-                    <i class="icon-photo"></i> Choose Picture
-                  </md-button>
-                </div>
-                <div data-ng-switch-when="Text">
-                  <md-button data-ng-click="vm.writeTextDialog($event)" class="pull-right w-100 mar-bot-10">
-                    <i class="icon-text-format"></i> Write Text
-                  </md-button>
-                </div>
-                <div data-ng-switch-when="Import SVG">
-                  <button data-ng-file-select data-ng-model="vm.importedSVG" data-accept="image/svg+xml"
-                             data-ng-file-change="vm.importSVG($files)" data-ng-multiple="true"
-                             class="btn btn-default w-100 mar-bot-10 import-svg-btn">
+              <div class="col-xs-12" data-ng-switch="vm.selectedAction.type">
+                <div data-ng-switch-when="Import">
+                  <button data-ng-if="vm.selectedAction.format === 'svg'"
+                          data-ng-file-select data-ng-model="vm.importedSVG" data-accept="image/svg+xml"
+                          data-ng-file-change="vm.importSVG($files)" data-ng-multiple="true"
+                          class="btn btn-default w-100 mar-bot-10 import-file-btn">
                     <i class="icon-svg"></i> Choose File
                   </button>
-                </div>
-                <div data-ng-switch-when="Import STK">
-                  <button data-ng-file-select data-ng-model="vm.importedSTK"
+                  <button data-ng-if="vm.selectedAction.format === 'stk'"
+                          data-ng-file-select data-ng-model="vm.importedSTK"
                           data-ng-file-change="vm.importSTK($files)" data-ng-multiple="true"
                           data-tooltip="Stk files for Pivot Animator v2 are currenly supported"
                           data-tooltip-popup-delay="1000"
-                          class="btn btn-default w-100 mar-bot-10 import-svg-btn">
+                          class="btn btn-default w-100 mar-bot-10 import-file-btn">
                     <i class="icon-svg"></i> Choose File
                   </button>
                 </div>
-                <div data-ng-switch-default>
-                  <md-button data-ng-click="vm.dpObjects.createObject(vm.newObjectType)"
-                             class="pull-right w-100 mar-bot-10">
-                    <i class="icon-add"></i> Add new
+                <div data-ng-switch-when="Insert">
+                  <md-button data-ng-click="vm.openActionDialog(vm.selectedAction.name, $event)"
+                             class="w-100 mar-bot-10">
+                    <i data-ng-if="vm.selectedAction.icon" class="icon-{{vm.selectedAction.icon}}"></i>
+                    {{vm.selectedAction.text}}
+                  </md-button>
+                </div>
+                <div  data-ng-switch-default>
+                  <md-button data-ng-click="vm.selectedAction.execute(vm.selectedAction.name)"
+                             class="w-100 mar-bot-10">
+                    <i data-ng-if="vm.selectedAction.icon" class="icon-{{vm.selectedAction.icon}}"></i>
+                    {{vm.selectedAction.text}}
                   </md-button>
                 </div>
               </div>
@@ -209,12 +207,12 @@
                          class="inline md-input-number-sm">
                 </md-input-container>
                 <md-input-container class="inline">
-                <input type="number" step="1"
-                       data-ng-change="vm.c.setSelectedScale(vm.c.selected.objects[0].data.scale.y, 'y')"
-                       data-ng-model="vm.c.selected.objects[0].data.scale.y"
-                       data-ng-disabled="!vm.c.selected.objects.length"
-                       data-tooltip-popup-delay="1000" data-tooltip="Object Height (p) (hold shift for decrease)"
-                       class="inline md-input-number-sm">
+                  <input type="number" step="1"
+                         data-ng-change="vm.c.setSelectedScale(vm.c.selected.objects[0].data.scale.y, 'y')"
+                         data-ng-model="vm.c.selected.objects[0].data.scale.y"
+                         data-ng-disabled="!vm.c.selected.objects.length"
+                         data-tooltip-popup-delay="1000" data-tooltip="Object Height (p) (hold shift for decrease)"
+                         class="inline md-input-number-sm">
                 </md-input-container>
                 <i data-ng-click="vm.c.objectScaleLock = !vm.c.objectScaleLock"
                    data-ng-class="{'icon-lock-open' : !vm.c.objectScaleLock}"
@@ -228,7 +226,8 @@
                   <input type="number" step="1" min="0"
                          data-ng-change="vm.c.setSelectedStrokeWidth(vm.c.selected.objects[0].strokeWidth)"
                          data-ng-model="vm.c.selected.objects[0].strokeWidth"
-                         data-tooltip-popup-delay="1000" data-tooltip="Object Stroke Width (i) (hold shift for decrease)"
+                         data-tooltip-popup-delay="1000"
+                         data-tooltip="Object Stroke Width (i) (hold shift for decrease)"
                          data-ng-disabled="!vm.c.selected.objects.length"
                          class="inline md-input-number-sm">
                 </md-input-container>
@@ -363,7 +362,8 @@
             </div>
           </div>
           <div class="col-xs-6 pad-rig-0">
-            <md-switch class="mar-bot-5 md-accent" data-ng-model="vm.c.showHandles" aria-label="Show Handles (e)">Show Handles (e)
+            <md-switch class="mar-bot-5 md-accent" data-ng-model="vm.c.showHandles" aria-label="Show Handles (e)">Show
+              Handles (e)
             </md-switch>
             <md-switch class="md-accent" data-ng-model="vm.c.showAllPaths" aria-label="Show Paths (r)">Show Paths (r)
             </md-switch>

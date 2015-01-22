@@ -41,4 +41,6 @@ module.exports = function(app) {
   app.get('/list/anims/recent', core.limit, anims.listAnimsRecent);
   app.get('/list/anims/random', core.limit, anims.listAnimsRandom);
   app.get('/list/anims/user/:userId', core.limit, anims.userAnims);
+
+  app.get('/anims/config/figures', users.requiresLogin, anims.figures);
 };

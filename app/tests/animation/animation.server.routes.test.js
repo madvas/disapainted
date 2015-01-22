@@ -725,6 +725,19 @@ describe('Animation REST API tests', function() {
         });
     });
   });
+
+  describe('Canvas figures', function(){
+    it('should load list of available stick-figures', function(done) {
+      agent.get('/api/anims/config/figures')
+        .expect(200)
+        .end(function(err, res) {
+          should.not.exist(err);
+          res.body.should.be.instanceof(Array).and.have.not.lengthOf(0);
+          done();
+        });
+    });
+  });
+
   after(function(done) {
     done = _.after(3, done);
     User.find({}).remove(done);

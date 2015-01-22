@@ -5,12 +5,16 @@
     .module('canvas')
     .factory('dpCanvasObjects', dpCanvasObjects);
 
-  dpCanvasObjects.$inject = ['dpPaperScope', 'dpCanvas', 'dpCanvasConfig', '$rootScope', '$http', 'dpObjectData'];
+  dpCanvasObjects.$inject = [
+    'dpPaperScope', 'dpCanvas', 'dpCanvasConfig', '$rootScope', '$http', 'dpObjectData', 'AnimsConfig', '$q',
+    '$localStorage'
+  ];
 
   /* @ngInject */
-  function dpCanvasObjects(dpPaperScope, dpCanvas, dpCanvasConfig, $rootScope, $http, dpObjectData) {
-    var me, objects
-      , predefinedObjects = {}
+  function dpCanvasObjects(dpPaperScope, dpCanvas, dpCanvasConfig, $rootScope, $http, dpObjectData, AnimsConfig, $q,
+                           $localStorage) {
+    var me, actions
+      , stickfigures = {}
       , p = dpPaperScope
       , c = dpCanvas
       , _ = $rootScope
@@ -22,61 +26,181 @@
         strokeCap   : 'round'
       };
 
-    $http.get('modules/canvas/canvas/predefined-objects.json').success(function(res) {
-      predefinedObjects = _.mapValues(res, function(obj) {
-        return dpObjectData.unpack(obj);
-      });
-      me.objectTypes = me.objectTypes.concat(_.keys(predefinedObjects));
-    });
-
-
-    objects = {
-      Stickman     : createStickman,
-      Line         : createLine,
-      Circle       : createCircle,
-      Picture      : createPicture,
-      Text         : createText,
-      'Import SVG' : createSVG,
-      'Import STK' : createSTK
-    };
+    actions = [
+      {
+        name    : 'Stickfigure',
+        type    : 'Insert',
+        text    : 'Choose Stickfigure',
+        execute : createStickfigures
+      },
+      {
+        name    : 'Picture',
+        type    : 'Insert',
+        text    : 'Choose Picture',
+        icon    : 'photo',
+        execute : _.wrap(createSvg, createObject)
+      },
+      {
+        name    : 'Text',
+        type    : 'Insert',
+        text    : 'Write Text',
+        icon    : 'text-format',
+        execute : _.wrap(createText, createObject)
+      },
+      {
+        name    : 'Line',
+        type    : 'Draw',
+        text    : 'Add new',
+        icon    : 'add',
+        execute : _.wrap(createLine, createObject)
+      },
+      {
+        name    : 'Circle',
+        type    : 'Draw',
+        text    : 'Add new',
+        icon    : 'add',
+        execute : _.wrap(createCircle, createObject)
+      },
+      {
+        name    : 'Import SVG',
+        type    : 'Import',
+        format  : 'svg',
+        execute : _.wrap(createSvg, createObject)
+      },
+      {
+        name    : 'Import STK',
+        type    : 'Import',
+        format  : 'stk',
+        execute : _.wrap(createStk, createObject)
+      }
+    ];
 
     me = {
-      objectTypes  : _.keys(objects),
-      createObject : createObject
+      actions : actions,
+      loading : false
     };
 
+    init();
     return me;
 
     ////////////////
 
-    function createObject(objectName, opts) {
-      var object;
-      if (objects[objectName]) {
-        object = objects[objectName](opts);
-        setObjectAdditionalData(object);
-        c.objects.addChild(object);
-        object.position = p.view.center;
-        c.createHandles(object);
-      } else {
-        object = c.importObjects(predefinedObjects[objectName]);
-        setObjectAdditionalData(object);
-      }
+    function init() {
+      $q.when(getRecentlyUsed()).then(function(res) {
+        stickfigures = _.mapValues(res.data, function(obj) {
+          return dpObjectData.unpack(obj);
+        });
+        _.each(_.keys(stickfigures).reverse(), function(figureName) {
+          pushRecentlyUsed(figureName);
+        });
+        $rootScope.$broadcast('actionsReady');
+      });
 
+
+      $http.get('/api/anims/config/figures').success(function(res) {
+        AnimsConfig.canvas.figures = res;
+      });
+    }
+
+    function getRecentlyUsed() {
+      if (_.isEmpty($localStorage.recentlyUsedFigures)) {
+        return $http.get('modules/canvas/canvas/predefined-objects.json').success(function(res) {
+          $localStorage.recentlyUsedFigures = res;
+        });
+      }
+      return {data : $localStorage.recentlyUsedFigures};
+    }
+
+    function createRecentlyUsed(figureName) {
+      return {
+        name    : figureName,
+        type    : 'Recently Used Figures',
+        text    : 'Add new',
+        execute : createStickfigures
+      };
+    }
+
+    function saveRecentlyUsed() {
+      $localStorage.recentlyUsedFigures = {};
+      _.each(_.filter(me.actions, {type : 'Recently Used Figures'}), function(action) {
+        $localStorage.recentlyUsedFigures[action.name] = dpObjectData.pack(stickfigures[action.name]);
+      });
+    }
+
+    function popRecentlyUsed() {
+      var lastEntry = _.findLast(me.actions, {type : 'Recently Used Figures'});
+      _.remove(me.actions, {name : lastEntry.name});
+    }
+
+    function pushRecentlyUsed(figureName) {
+      if (!_.any(me.actions, {name : figureName})) {
+        me.actions.unshift(createRecentlyUsed(figureName));
+        return true;
+      }
+    }
+
+    function createStickfigures(opts) {
+      var object
+        , figures = _.isString(opts) ? [opts] : opts.source;
+      loadStickfigures(figures).then(function() {
+        _.each(figures, function(figureName) {
+          object = c.importObject(stickfigures[figureName], true);
+          initObject(object);
+          if (pushRecentlyUsed(figureName)) {
+            popRecentlyUsed();
+            saveRecentlyUsed();
+          }
+        });
+      });
+    }
+
+    function loadStickfigures(figures) {
+      var deferred, promise, allPromises
+        , promises = [];
+      _.each(figures, function(figureName) {
+        if (stickfigures[figureName]) {
+          deferred = $q.defer();
+          deferred.resolve();
+          promises.push(deferred.promise);
+        } else {
+          me.loading = true;
+          promise = $http.get(AnimsConfig.canvas.figuresPath + figureName + '.jsonpack');
+          promise.success(function(res) {
+            stickfigures[figureName] = dpObjectData.unpack(res);
+          });
+          promises.push(promise);
+        }
+      });
+      allPromises = $q.all(promises);
+      allPromises.then(function() {
+        me.loading = false;
+      });
+      return allPromises;
+    }
+
+    function createObject(createFunc, opts) {
+      var object;
+      object = createFunc(opts);
+      c.objects.addChild(object);
+      object.position = p.view.center;
+      c.createHandles(object);
+
+      initObject(object);
+    }
+
+    function initObject(object) {
+      object.data = {
+        refId        : object.id,
+        handleRadius : cfg.handleRadius
+      };
+      object.selected = c.showAllPaths;
       c.createScales(object);
       c.selectObject(object);
       c.selectPath(object.firstChild);
       c.draw();
     }
 
-    function setObjectAdditionalData(object) {
-      object.data = {
-        refId        : object.id,
-        handleRadius : cfg.handleRadius
-      };
-      object.selected = c.showAllPaths;
-    }
-
-    function setPathAdditionalData(path) {
+    function initPath(path) {
       _.extend(path.data, {
         movable : true,
         refId   : path.id
@@ -86,7 +210,7 @@
 
     function createMainPathGroup() {
       var path = new p.Path(new p.Point(0, 0));
-      setPathAdditionalData(path);
+      initPath(path);
       path.data.movableRoot = true;
       return new p.Group(path);
     }
@@ -116,68 +240,8 @@
           break;
       }
 
-      setPathAdditionalData(path);
+      initPath(path);
       return new p.Group(path);
-    }
-
-    function createStickman() {
-      var stickmanGroup, lowerBody, lowerBodyPt, upperBody, middleBodyPt, neckPt, leftArm, leftArmPt, leftForearm,
-        leftForearmPt, rightArm, rightArmPt, rightForearm, rightForearmPt, leftThigh, leftThighPt, leftCalf, leftCalfPt,
-        rightThigh, rightThighPt, rightCalf, rightCalfPt, head, headPt;
-
-      stickmanGroup = createMainPathGroup();
-      lowerBodyPt = stickmanGroup.firstChild.lastSegment.point;
-
-      middleBodyPt = [0, -32];
-      lowerBody = createNewPathGroup(lowerBodyPt, middleBodyPt);
-      middleBodyPt = lowerBody.firstChild.lastSegment.point;
-      stickmanGroup.addChild(lowerBody);
-
-      neckPt = [0, -32];
-      upperBody = createNewPathGroup(middleBodyPt, neckPt);
-      neckPt = upperBody.firstChild.lastSegment.point;
-      lowerBody.addChild(upperBody);
-
-      rightArmPt = [27, 27];
-      rightArm = createNewPathGroup(neckPt, rightArmPt);
-      rightArmPt = rightArm.firstChild.lastSegment.point;
-      upperBody.addChild(rightArm);
-
-      rightForearmPt = [20, 35];
-      rightForearm = createNewPathGroup(rightArmPt, rightForearmPt);
-      rightArm.addChild(rightForearm);
-
-      leftArmPt = [-27, 27];
-      leftArm = createNewPathGroup(neckPt, leftArmPt);
-      leftArmPt = leftArm.firstChild.lastSegment.point;
-      upperBody.addChild(leftArm);
-
-      leftForearmPt = [-20, 35];
-      leftForearm = createNewPathGroup(leftArmPt, leftForearmPt);
-      leftArm.addChild(leftForearm);
-
-      rightThighPt = [20, 46];
-      rightThigh = createNewPathGroup(lowerBodyPt, rightThighPt);
-      rightThighPt = rightThigh.firstChild.lastSegment.point;
-      stickmanGroup.addChild(rightThigh);
-
-      rightCalfPt = [20, 46];
-      rightCalf = createNewPathGroup(rightThighPt, rightCalfPt);
-      rightThigh.addChild(rightCalf);
-
-      leftThighPt = [-20, 46];
-      leftThigh = createNewPathGroup(lowerBodyPt, leftThighPt);
-      leftThighPt = leftThigh.firstChild.lastSegment.point;
-      stickmanGroup.addChild(leftThigh);
-
-      leftCalfPt = [-20, 46];
-      leftCalf = createNewPathGroup(leftThighPt, leftCalfPt);
-      leftThigh.addChild(leftCalf);
-
-      headPt = [0, -40];
-      head = createNewPathGroup(neckPt, headPt, {type : 'circle'});
-      upperBody.addChild(head);
-      return stickmanGroup;
     }
 
     function createPicture(opts) {
@@ -210,7 +274,7 @@
       var group, textGroup = createMainPathGroup(),
         text = new p.PointText([0, 0]);
       text.fontSize = 30;
-      _.extend(text, opts);
+      text.content = opts.source;
       group = createNewPathGroup(text.bounds.bottomLeft, text.bounds.bottomRight, {absolute : true});
       textGroup.firstChild.firstSegment.point = text.bounds.bottomLeft;
       group.firstChild.visible = false;
@@ -219,9 +283,9 @@
       return textGroup;
     }
 
-    function createSVG(opts) {
+    function createSvg(opts) {
       var group
-        , svgGroup  = createMainPathGroup();
+        , svgGroup = createMainPathGroup();
       svgGroup.importSVG(opts.source);
       group = createNewPathGroup(svgGroup.bounds.bottomLeft, svgGroup.bounds.bottomRight, {absolute : true});
       svgGroup.firstChild.firstSegment.point = svgGroup.bounds.bottomLeft;
@@ -231,7 +295,7 @@
       return svgGroup;
     }
 
-    function createSTK(opts) {
+    function createStk(opts) {
       var dataview, parent, limbCount, offset
         , limbs = []
         , stkGroup = createMainPathGroup();
@@ -274,10 +338,10 @@
 
     function createStkGroup(srcPoint, limb) {
       var path, center
-      , point = new p.Point({
-        length : limb.length,
-        angle  : limb.angle
-      });
+        , point = new p.Point({
+          length : limb.length,
+          angle  : limb.angle
+        });
 
       if (!limb.isCircle) {
         point = point.add(srcPoint);
@@ -290,7 +354,7 @@
         });
         path.rotate(limb.angle);
       }
-      setPathAdditionalData(path);
+      initPath(path);
       path.strokeWidth = limb.strokeWidth;
       path.data.stkId = limb.id;
 
@@ -305,6 +369,5 @@
       }
       return new p.Group(path);
     }
-
   }
 })();

@@ -29,8 +29,7 @@
     vm.activate = activate;
     vm.isPublishable = isPublishable;
     vm.publishAnimDialog = publishAnimDialog;
-    vm.choosePictureDialog = choosePictureDialog;
-    vm.writeTextDialog = writeTextDialog;
+    vm.openActionDialog = openActionDialog;
     vm.importSVG = importSVG;
     vm.importSTK = importSTK;
 
@@ -40,12 +39,15 @@
 
     function activate() {
       var framesPromise;
-
+      $scope.$on('actionsReady', function() {
+        vm.selectedAction = vm.dpObjects.actions[0];
+      });
       vm.f.init();
       dpResource.get($stateParams.animId).then(function(anim) {
         if (!vm.auth.user || vm.auth.user._id !== anim.creator) {
           $state.go('userForm.signin');
         }
+
         vm.current.anim = anim;
         framesPromise = dpResource.getFrames(vm.current.anim, true);
         vm.f.frames = framesPromise.$object;
@@ -78,7 +80,7 @@
         }
         var reader = new FileReader();
         reader.onload = function(e) {
-          dpCanvasObjects.createObject('Import STK', {source : e.target.result});
+          vm.selectedAction.execute({source : e.target.result});
         };
         reader.readAsArrayBuffer(file);
       });
@@ -93,7 +95,7 @@
         }
         var reader = new FileReader();
         reader.onload = function(e) {
-          dpCanvasObjects.createObject('Import SVG', {source : e.target.result});
+          vm.selectedAction.execute({source : e.target.result});
         };
         reader.readAsText(file);
       });
@@ -124,35 +126,21 @@
       });
     }
 
-    function choosePictureDialog(evt) {
-      $mdDialog.show({
-        controller   : 'CanvasPicturesController',
-        controllerAs : 'vm',
-        templateUrl  : 'modules/canvas/canvas/dialogs/pictures-canvas.client.view.html',
-        targetEvent  : evt,
-        hasBackdrop  : false
-      }).then(function(answer) {
-        dpCanvasObjects.createObject(answer.type, {source : answer.src});
-      });
-    }
-
-    function writeTextDialog(evt) {
+    function openActionDialog(type, evt) {
       vm.t.detachKeyEvents();
       $mdDialog.show({
-        controller   : 'CanvasTextController',
+        controller   : 'Canvas' + type + 'Controller',
         controllerAs : 'vm',
-        templateUrl  : 'modules/canvas/canvas/dialogs/text-canvas.client.view.html',
+        templateUrl  : 'modules/canvas/canvas/dialogs/' + type.toLowerCase() + '-canvas.client.view.html',
         targetEvent  : evt,
         hasBackdrop  : false
-      }).then(function(content) {
-        if (!content) return;
-        dpCanvasObjects.createObject('Text', {content : content});
+      }).then(function(anwser) {
+        if (_.isEmpty(anwser)) return;
+        vm.selectedAction.execute({source : anwser});
       }).finally(function() {
         vm.t.attachKeyEvents();
       });
     }
-
-
   }
 })();
 

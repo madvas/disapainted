@@ -1,18 +1,15 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
-var mongoose = require('mongoose'),
-  errHandler = require('./errors.server.controller'),
-  Animation = mongoose.model('Animation'),
-  _ = require('lodash'),
-  AnimationFrame = mongoose.model('AnimationFrame'),
-  config = require('../../config/config'),
-  moment = require('moment'),
-  paper = require('paper'),
-  fs = require('fs'),
-  base64resize = require('base64resize');
+var mongoose = require('mongoose')
+  , errHandler = require('./errors.server.controller')
+  , Animation = mongoose.model('Animation')
+  , _ = require('lodash')
+  , AnimationFrame = mongoose.model('AnimationFrame')
+  , config = require('../../config/config')
+  , moment = require('moment')
+  , fs = require('fs')
+  , readdirp = require('readdirp')
+  , base64resize = require('base64resize');
 
 
 exports.create = function(req, res) {
@@ -241,4 +238,16 @@ exports.userAnims = function(req, res) {
     columns : columns,
     sortBy  : req.query.sort || '-likesCount'
   });
+};
+
+
+exports.figures = function(req, res) {
+  readdirp({root : 'public/' + config.animations.canvas.figuresPath, fileFilter : '*.png'}, _.noop,
+    function(err, readRes) {
+      if (err) return res.status(400).json({message : 'Sorry, I was unable to get stick-figures'});
+      var figureTypes = _.map(readRes.files, function(file) {
+        return file.name.slice(0, -4);
+      });
+      res.status(200).send(figureTypes);
+    });
 };

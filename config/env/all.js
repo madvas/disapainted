@@ -107,10 +107,11 @@ module.exports = {
       width    : 640,
       height   : 360,
       pictures : {
-        objects  : canvasPicturesPath + 'objects/*.*',
-        effects  : canvasPicturesPath + 'effects/*.*',
+        objects : canvasPicturesPath + 'objects/*.*',
+        effects : canvasPicturesPath + 'effects/*.*',
         weapons : canvasPicturesPath + 'weapons/*.*'
-      }
+      },
+      figuresPath : '/modules/canvas/figures/'
     }
   },
   users             : {

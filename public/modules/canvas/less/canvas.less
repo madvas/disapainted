@@ -110,7 +110,7 @@
         margin-bottom: 0;
       }
       &.selected-object {
-        .btn:not(.import-svg-btn) {
+        .btn:not(.import-file-btn) {
           margin: 2px;
         }
       }
@@ -156,9 +156,6 @@
     text-align: center;
     width: 1000px;
     margin: 0;;
-    .canvas-pictures-list-wrap {
-      min-height: 400px;
-    }
     .selectable {
       svg {
         max-width: 140px;
@@ -169,6 +166,33 @@
       cursor: pointer;
     }
   }
+}
+
+.canvas-dialog-list-wrap {
+  min-height: 400px;
+}
+
+.canvas-figures-dialog {
+  .canvas-figures-content {
+    text-align: center;
+    min-width: 1000px;
+    margin: 0;
+  }
+  .selectable-wrap {
+    height: 100px;
+    cursor: pointer;
+    img {
+      max-width: 140px;
+      max-height: 70px;
+    }
+    .figure-name {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+  }
+
 }
 
 .canvas-text-dialog {
