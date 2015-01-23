@@ -1,6 +1,14 @@
 (function() {
   'use strict';
 
+  /* global _: true */
+  var sendJsError = _.throttle(function(analytics, exception) {
+    analytics.eventTrack('error-js', {
+      category : exception.message,
+      label    : location.pathname + '\n' + navigator.userAgent + '\n' + exception.stack
+    });
+  }, 30000);
+
   angular
     .module('core')
     .config(locationConfig)
@@ -117,10 +125,7 @@
   /* @ngInject */
   function extendExceptionHandler($delegate, $analytics) {
     return function(exception, cause) {
-      $analytics.eventTrack('error-js', {
-        category : exception.message,
-        label    : location.pathname + '\n' + navigator.userAgent + '\n' + exception.stack
-      });
+      sendJsError($analytics, exception);
       $delegate(exception, cause);
     };
   }
