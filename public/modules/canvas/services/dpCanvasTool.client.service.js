@@ -186,6 +186,7 @@
           if (c.selected.handle) {
             c.selected.handle.emit('mouseup');
           }
+          objectsToSelect = [];
           tool.emit('mouseup');
           $rootScope.$apply(function() {
             f.newFrame();
