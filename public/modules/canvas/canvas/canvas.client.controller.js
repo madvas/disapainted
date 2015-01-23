@@ -59,6 +59,10 @@
             vm.c.initLayers(frames);
             vm.f.currentFrameIndex = 0;
             vm.f.currentFrame = frames[0];
+            $analytics.eventTrack('anim-edit', {
+              category : vm.auth.user._id,
+              label    : vm.current.anim._id
+            });
           }
           vm.loading = false;
           $scope.$watch('vm.f.currentFrame', function(newValue) {
