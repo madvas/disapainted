@@ -91,7 +91,6 @@
     "karma-jasmine": "~0.2.1",
     "karma-phantomjs-launcher": "~0.1.2",
     "load-grunt-tasks": "~0.6.0",
-    "mysql": "^2.5.3",
     "should": "~4.0.4",
     "supertest": "~0.14.0"
   }
