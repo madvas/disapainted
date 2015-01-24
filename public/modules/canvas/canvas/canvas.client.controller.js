@@ -32,7 +32,7 @@
     vm.openActionDialog = openActionDialog;
     vm.importSVG = importSVG;
     vm.importSTK = importSTK;
-
+    vm.selectedAction = vm.dpObjects.actions[0];
     activate();
 
     ////////////////
