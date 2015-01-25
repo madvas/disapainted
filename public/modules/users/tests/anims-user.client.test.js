@@ -1,4 +1,5 @@
-var config = require('../../core/tests/core.client.po.js');
+var config = require('../../core/tests/core.client.po.js')
+  , url = require('url');
 
 describe('Disapainted view user page', function() {
   var animHref, userId;
@@ -7,7 +8,7 @@ describe('Disapainted view user page', function() {
     browser.get(config.getUrl());
     var firstAnim = $$('.home-anim-link').first();
     firstAnim.getAttribute('href').then(function(anim) {
-      animHref = anim;
+      animHref = url.parse(anim);
       firstAnim.element(by.css('.creator')).getText().then(function(user) {
         userId = user;
       });
@@ -17,13 +18,13 @@ describe('Disapainted view user page', function() {
 
   it('should have user page working correctly', function() {
     browser.setLocation('users/' + userId);
-    expect(element(by.binding('vm.current.user._id')).getText()).toBe(userId);
+    expect(element.all(by.binding('vm.current.user._id')).first().getText()).toBe(userId);
     expect(element(by.binding('vm.current.user.created')).getText()).toContain('ago');
     expect(element(by.binding('vm.current.user.bio')).isPresent()).toBe(true);
   });
 
   it('should contain user\'s anim link from home page', function() {
-    expect(element(by.css('a[href="' + animHref.substr((config.getUrl() + '/').length) + '"]'))
+    expect(element(by.css('a[href="' + animHref.path.substr(1) + '"]'))
       .isPresent()).toBe(true);
   });
 
