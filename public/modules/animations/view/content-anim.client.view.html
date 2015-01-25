@@ -23,14 +23,14 @@
           </div>
           <div class="col-xs-12 col-sm-3 hpad-0 text-center">
             <div class="text-center btn-group">
-              <button data-ng-click="vm.player.next(-1)" type="button" class="btn btn-default">
+              <button data-ng-click="vm.player.next(-1)" type="button" class="btn btn-default player-btn-prev">
                 <i class="icon-backward"></i>
               </button>
               <button data-ng-click="vm.player.play()" type="button" class="btn btn-default">
                 <i data-ng-class="{'icon-play' : !vm.player.playing, 'icon-pause' : vm.player.playing}">
                 </i>
               </button>
-              <button data-ng-click="vm.player.next(1)" type="button" class="btn btn-default">
+              <button data-ng-click="vm.player.next(1)" type="button" class="btn btn-default player-btn-next">
                 <i class="icon-forward"></i>
               </button>
             </div>

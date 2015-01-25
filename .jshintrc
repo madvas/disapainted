@@ -70,7 +70,8 @@
     "AppConfig",
     "browser",
     "element",
-    "by"
+    "by",
+    "$$"
   ],
   "devel"        : true
 }

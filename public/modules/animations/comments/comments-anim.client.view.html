@@ -23,7 +23,7 @@
           </md-input-container>
           <div class="col-xs-12 col-xs-offset-0 mar-bot-10 hpad-0">
             <md-button data-ng-disabled="!commentForm.$valid" data-ng-click="co.addComment(this)" aria-label="Add Comment"
-                       class="md-primary md-raised pull-right btn-md-if-xs">Send</md-button>
+                       class="md-primary md-raised pull-right btn-md-if-xs add-comment-btn">Send</md-button>
             </div>
         </form>
       </div>
@@ -65,7 +65,7 @@
             <div class="row comment-action-wrap">
               <div class="col-xs-6">
                 <h5 data-ng-show="comment.likes.length">
-                  <small><i class="icon-star"></i> {{comment.likes.length}}</small>
+                  <small><i class="icon-star"></i> <span>{{comment.likes.length}}</span></small>
                 </h5>
               </div>
               <div class="col-xs-6">

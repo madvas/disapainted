@@ -153,6 +153,9 @@ module.exports = function(grunt) {
       },
       dev        : {
         src : 'env-src-dev.json'
+      },
+      live       : {
+        URL : 'http://disapainted.com'
       }
     },
     mochaTest        : {
@@ -177,11 +180,10 @@ module.exports = function(grunt) {
     },
     protractor       : {
       options : {
-//        configFile: "node_modules/protractor/referenceConf.js", // Default config file
-        keepAlive : true, // If false, the grunt process stops when the test fails.
-        noColor   : false // If true, protractor will not use colors in its output.
+        keepAlive : true,
+        noColor   : false
       },
-      dev     : {
+      main    : {
         options : {
           configFile : 'protractor.conf.js'
         }
@@ -257,7 +259,9 @@ module.exports = function(grunt) {
     'forever:production:stop', 'forever:production:start'
   ]);
   grunt.registerTask('webhook', ['create-deploys', 'shell:webhook']);
-  grunt.registerTask('protractor', ['protractor:dev']);
+  grunt.registerTask('e2e-live', ['env:live', 'protractor:main']);
+  grunt.registerTask('e2e-dev', ['env:dev', 'protractor:main']);
+  grunt.registerTask('e2e-prod', ['env:production', 'protractor:main']);
 
   grunt.task.registerTask('create-deploys', 'Sets basepath in deploys.json file', function() {
     var config = require(__dirname + '/deploysTpl.json');

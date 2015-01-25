@@ -15,11 +15,11 @@
             <a data-dp-anim-href="{{::item._id}}"
                data-popover-placement="{{::vm.getPopoverPlacement(itemKey, type.list)}}"
                data-popover="{{::item.title}}" data-popover-trigger="mouseenter"
-               class="md-whiteframe-z1 anim-thumb-link no-dec">
+               class="md-whiteframe-z1 anim-thumb-link no-dec home-anim-link">
               <img class="img-responsive w-100" data-dp-thumb="{{::item._id}}"/>
               <h6 class="gray-dark">
-                <i class="icon-film"></i> {{::item.framesCount}}
-                <i class="mar-lef-5 icon-star"></i> {{::item.likesCount}}
+                <i class="icon-film"></i> <span>{{::item.framesCount}}</span>
+                <i class="mar-lef-5 icon-star"></i> <span>{{::item.likesCount}}</span>
                 <span class="gray-text pull-right">{{::item.datePublish | timeAgo}}</span>
                 <span class="pull-right creator"> {{::item.creator | characters:15}} </span>
               </h6>
@@ -30,7 +30,7 @@
           <div data-ng-repeat="(itemKey, item) in type.list" class="col-md-2 col-md-offset-0 col-sm-3 col-xs-12"
                data-ng-class="{'col-sm-offset-3' : itemKey === 4}">
             <a data-dp-user-href="{{::item._id}}"
-               class="md-whiteframe-z1 anim-thumb-link no-dec">
+               class="md-whiteframe-z1 anim-thumb-link no-dec home-user-link">
               <img class="img-responsive center-block" data-dp-thumb="{{::item._id}}" data-dp-thumb-type="users">
 
               <div class="user-caption gray-dark">
