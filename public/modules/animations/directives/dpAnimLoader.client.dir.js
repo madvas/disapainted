@@ -17,9 +17,10 @@
     directive = {
       link     : link,
       restrict : 'A',
+      transclude : true,
       template : '<div layout="column" layout-align="center center" class="anim-loading-wrap">' +
         '<md-progress-circular md-mode="indeterminate"></md-progress-circular>' +
-        '<span class="font-sm mar-top-10">Preparing animation</span>' +
+        '<span class="font-sm mar-top-10" data-ng-transclude></span>' +
         '</div>'
     };
     return directive;
@@ -31,7 +32,8 @@
     }
 
     function setElHeight(el) {
-      el.css('height', (el.prop('clientWidth') * ratio) + 'px');
+      var width = el.prop('clientWidth') || AnimsConfig.canvas.width;
+      el.css('height', (width * ratio) + 'px');
     }
   }
 })();

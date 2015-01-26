@@ -1,0 +1,17 @@
+<md-dialog aria-label="Generated gif from animation dialog">
+  <md-content>
+    <div class="gif-anim-wrap center-block md-whiteframe-z1">
+      <div data-ng-show="vm.loading" data-dp-anim-loader>
+        <div class="text-center">Generating GIF ({{vm.dpGifEncoder.progressValue}}/{{vm.framesCount}})</div>
+        <div>This may take a while</div>
+      </div>
+      <img data-ng-if="!vm.loading" class="gif-anim" data-ng-src="{{vm.gif}}"/>
+    </div>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <div data-ng-hide="vm.loading" class="font-sm mar-rig-10">
+      Press right click on the image and choose "Save image as..." for saving
+    </div>
+    <md-button ng-click="vm.answer()">Close</md-button>
+  </div>
+</md-dialog>

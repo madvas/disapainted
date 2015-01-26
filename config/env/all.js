@@ -71,7 +71,7 @@ module.exports = {
       'public/config.js',
       'public/application.js',
       'public/modules/*/*.js',
-      'public/modules/**/*[!tests]*/*.js'
+      'public/modules/**/*[!tests|workers]*/*.js'
     ],
     tests : [
       'public/modules/*/tests/*.js'
@@ -104,9 +104,9 @@ module.exports = {
       height : 169
     },
     canvas            : {
-      width    : 640,
-      height   : 360,
-      pictures : {
+      width       : 640,
+      height      : 360,
+      pictures    : {
         objects : canvasPicturesPath + 'objects/*.*',
         effects : canvasPicturesPath + 'effects/*.*',
         weapons : canvasPicturesPath + 'weapons/*.*'

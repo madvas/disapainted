@@ -36,6 +36,16 @@ describe('Disapainted view animation page', function() {
     expect(element(by.binding('vm.current.creator.likesCount')).getText()).toBeGreaterThan(-1);
   });
 
+  it('should be able to export animation as GIF', function() {
+    $$('.generate-gif-btn').click();
+    browser.wait(function() {
+      return browser.isElementPresent(by.css('.gif-anim'));
+    });
+    $$('.gif-anim').first().getAttribute('src').then(function(src) {
+      expect(src.length).toBeGreaterThan(100);
+    });
+  }, 90000);
+
   it('should have comments working properly', function() {
     browser.executeScript('window.scrollTo(0,500);');
     var comments = element.all(by.repeater('comment in vm.current.anim.comments'));

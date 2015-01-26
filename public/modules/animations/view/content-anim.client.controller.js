@@ -7,12 +7,12 @@
 
   ContentAnimationController.$inject = [
     '$scope', '$location', 'dpResource', '$state', '$stateParams', '$anchorScroll',
-    'dpPlayer', '$analytics'
+    'dpPlayer', '$analytics', '$mdDialog', '$window'
   ];
 
   /* @ngInject */
   function ContentAnimationController($scope, $location, dpResource, $state, $stateParams, $anchorScroll, dpPlayer,
-                                      $analytics) {
+                                      $analytics, $mdDialog, $window) {
     /* jshint validthis: true */
     var vm = this;
 
@@ -23,6 +23,8 @@
     vm.activate = activate;
     vm.getShareText = getShareText;
     vm.likeAnim = likeAnim;
+    vm.gifDialog = gifDialog;
+    vm.isWorkerSupported = isWorkerSupported;
     activate();
 
     ////////////////
@@ -77,6 +79,21 @@
         vm.current.anim.liked = !vm.current.anim.liked;
       });
     }
+
+    function gifDialog(evt) {
+      $mdDialog.show({
+        controller   : 'GifAnimController',
+        controllerAs : 'vm',
+        templateUrl  : 'modules/animations/view/dialogs/gif-anim.client.view.html',
+        targetEvent  : evt,
+        hasBackdrop  : false
+      });
+    }
+
+    function isWorkerSupported() {
+      return !!$window.Worker;
+    }
+
   }
 })();
 

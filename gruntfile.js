@@ -89,6 +89,15 @@ module.exports = function(grunt) {
           'public/dist/customized/angular-material/angular-material.min.js' :
             'public/dist/customized/angular-material/angular-material.js'
         }
+      },
+      jsgif : {
+        files : {
+          'public/dist/customized/jsgif/jsgif.min.js' : [
+            'public/dist/customized/jsgif/GIFEncoder.js',
+            'public/dist/customized/jsgif/LZWEncoder.js',
+            'public/dist/customized/jsgif/NeuQuant.js'
+          ]
+        }
       }
     },
     cssmin           : {

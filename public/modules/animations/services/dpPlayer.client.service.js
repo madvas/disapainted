@@ -27,7 +27,8 @@
       next         : next,
       play         : play,
       stop         : stop,
-      lastFrame    : lastFrame
+      lastFrame    : lastFrame,
+      getDelays    : getDelays
     };
 
     return me;
@@ -66,7 +67,7 @@
 
     function playNext(instant) {
       if (me.playing) {
-        var delay = instant ? 0 : (11 - me.settings.speed) * 50 - ((11 - me.settings.speed) * 15);
+        var delay = instant ? 0 : getDelay();
         $timeout(_.partial(me.next, 1), delay * me.frames[me.currentFrame].repeat);
       }
     }
@@ -90,5 +91,16 @@
     function lastFrame() {
       return _.keys(me.frames).length - 1;
     }
+
+    function getDelay() {
+      return (11 - me.settings.speed) * 50 - ((11 - me.settings.speed) * 15);
+    }
+
+    function getDelays() {
+      return _.map(me.frames, function(frame) {
+        return getDelay() * frame.repeat;
+      });
+    }
+
   }
 })();
