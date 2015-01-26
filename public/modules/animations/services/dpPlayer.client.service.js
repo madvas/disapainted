@@ -67,8 +67,13 @@
 
     function playNext(instant) {
       if (me.playing) {
-        var delay = instant ? 0 : getDelay();
-        $timeout(_.partial(me.next, 1), delay * me.frames[me.currentFrame].repeat);
+        var delay = instant ? 0 : getDelay()
+          , frame = me.frames[me.currentFrame];
+        if (frame) {
+          $timeout(_.partial(me.next, 1), delay * me.frames[me.currentFrame].repeat);
+        } else {
+          stop();
+        }
       }
     }
 
