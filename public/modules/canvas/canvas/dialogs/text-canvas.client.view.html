@@ -1,7 +1,10 @@
 <md-dialog aria-label="Write Text" class="canvas-text-dialog">
   <md-content class="canvas-text">
     <md-subheader class="md-sticky-no-effect">Write Text</md-subheader>
-    <textarea data-ng-model="vm.content" class="form-control" placeholder="Enter text here"></textarea>
+    <md-input-container flex>
+      <label>Text</label>
+      <textarea data-ng-model="vm.content"></textarea>
+    </md-input-container>
   </md-content>
   <div class="md-actions" layout="row">
     <md-button ng-click="vm.answer(vm.content)" class="md-primary">Insert Text</md-button>

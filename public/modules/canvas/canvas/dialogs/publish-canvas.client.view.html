@@ -2,24 +2,39 @@
   <md-content class="canvas-publish-anim">
     <md-subheader class="md-sticky-no-effect">Animation Title & Description</md-subheader>
     <form novalidate name="publishAnimForm">
-      <div class="form-group">
-        <label for="animTitle">Title</label>
-        <input id="animTitle" data-ng-model="vm.title" name="title" data-ng-maxLength="vm.AnimsConfig.titleMaxLength"
-               data-ng-minLength="vm.AnimsConfig.titleMinLength" type="text" placeholder="Enter animation title"
-               class="form-control" required>
-      </div>
-      <div class="form-group">
-        <label for="animDesc">Description ({{vm.charsLeft(publishAnimForm.desc.$valid)}})</label>
-        <textarea data-ng-model="vm.desc" name="desc" id="animDesc" data-ng-maxLength="vm.AnimsConfig.descMaxLength"
-                  class="form-control" placeholder="Enter short description"></textarea>
-      </div>
+      <md-input-container>
+        <label>Title</label>
+        <input id="animTitle" data-ng-model="vm.title" name="title" md-maxlength="vm.AnimsConfig.titleMaxLength"
+               data-ng-minLength="vm.AnimsConfig.titleMinLength" required>
+
+        <div ng-if="publishAnimForm.title.$dirty" ng-messages="publishAnimForm.title.$error">
+          <div ng-message="required">Animation title is required</div>
+          <div ng-message="minlength">Animation title should be at least {{::vm.AnimsConfig.titleMinLength}}
+            characters long
+          </div>
+          <div ng-message="md-maxlength">
+            The title has to be less than {{::vm.AnimsConfig.titleMaxLength}} characters long
+          </div>
+        </div>
+      </md-input-container>
+
+      <md-input-container flex>
+        <label>Description</label>
+        <textarea data-ng-model="vm.desc" name="desc" id="animDesc" md-maxlength="vm.AnimsConfig.descMaxLength">
+        </textarea>
+
+        <div ng-if="publishAnimForm.desc.$dirty" ng-messages="publishAnimForm.desc.$error">
+          <div data-ng-message="md-maxlength">Your description is too long</div>
+        </div>
+      </md-input-container>
     </form>
 
   </md-content>
   <div class="md-actions" layout="row">
     <md-button ng-click="vm.answer()">Not yet</md-button>
-    <md-button data-ng-disabled="publishAnimForm.$invalid || publishAnimForm.$pristine"
+    <md-button data-ng-disabled="!publishAnimForm.$valid"
                data-ng-click="vm.answer({title : vm.title, desc : vm.desc})"
-               class="md-primary publish-anim-confirm">Publish Animation!</md-button>
+               class="md-primary publish-anim-confirm">Publish Animation!
+    </md-button>
   </div>
 </md-dialog>
