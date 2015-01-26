@@ -44,7 +44,7 @@ module.exports = {
         'public/lib/angular-lodash/angular-lodash.js',
         'public/lib/restangular/dist/restangular.js',
         'public/lib/angular-aria/angular-aria.min.js',
-        'public/dist/customized/angular-material/angular-material.js',
+        'public/lib/angular-material/angular-material.min.js',
         'public/lib/hammerjs/hammer.min.js',
         'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
         'public/lib/ngtoast/dist/ngToast.min.js',
@@ -61,7 +61,7 @@ module.exports = {
     },
     css   : [
       'public/lib/angular-socialshare/angular-socialshare.min.css',
-      'public/dist/customized/angular-material/angular-material.css',
+      'public/lib/angular-material/angular-material.min.css',
       'public/lib/ngtoast/dist/ngToast.min.css',
       'https://fonts.googleapis.com/css?family=RobotoDraft:300,400',
       'public/lib/angular-bootstrap-colorpicker/css/colorpicker.css',

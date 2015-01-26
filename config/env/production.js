@@ -14,7 +14,7 @@ module.exports = {
     lib : {
       css : [],
       js  : [
-        'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js',
+        'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js',
         'public/lib/angular-animate/angular-animate.min.js',
         'public/lib/angular-ui-router/release/angular-ui-router.min.js',
         'public/lib/angular-sanitize/angular-sanitize.min.js',
@@ -26,7 +26,7 @@ module.exports = {
         'public/lib/lodash/dist/lodash.min.js',
         'public/lib/angular-lodash/angular-lodash.js',
         'public/lib/restangular/dist/restangular.min.js',
-        'public/dist/customized/angular-material/angular-material.min.js',
+        'http://ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.js',
         'public/lib/hammerjs/hammer.min.js',
         'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
         'public/lib/ngtoast/dist/ngToast.min.js',
@@ -43,7 +43,7 @@ module.exports = {
     },
     css : [
       'public/lib/angular-socialshare/angular-socialshare.min.css',
-      'public/dist/customized/angular-material/angular-material.min.css',
+      'http://ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.css',
       'public/lib/ngtoast/dist/ngToast.min.css',
       'public/lib/angular-bootstrap-colorpicker/css/colorpicker.css',
       'https://fonts.googleapis.com/css?family=RobotoDraft:300,400',
