@@ -394,6 +394,7 @@
         object.remove();
       });
       me.selected.objects = [];
+      me.selected.path = false;
       draw();
     }
 
@@ -545,7 +546,7 @@
 
     function isObjectSettingVisible(setting) {
       var textItem;
-      if (!me.selected.objects.length || !me.selected.path) return false;
+      if (!me.selected.objects.length || !me.selected.path || !me.selected.objects[0]) return false;
       if (!me.selected.path.data.movableRoot) return false;
       textItem = me.selected.objects[0].dpGetTextItem();
       return _.contains(['fontFamily', 'fontWeight'], setting) && textItem;

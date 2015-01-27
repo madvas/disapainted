@@ -77,10 +77,13 @@ module.exports = function(grunt) {
     },
     uglify           : {
       options    : {
-        mangle : false
+        mangle : true
       },
       production : {
-        files : {
+        options : {
+          mangle : false
+        },
+        files   : {
           'public/dist/build/application.min.js' : 'public/dist/build/application.js'
         }
       },
@@ -90,7 +93,7 @@ module.exports = function(grunt) {
             'public/dist/customized/angular-material/angular-material.js'
         }
       },
-      jsgif : {
+      jsgif      : {
         files : {
           'public/dist/customized/jsgif/jsgif.min.js' : [
             'public/dist/customized/jsgif/GIFEncoder.js',

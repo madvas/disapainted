@@ -241,6 +241,7 @@
                          data-ng-change="vm.c.objectHandleRadiusChange()"
                          data-ng-model="vm.c.selected.objects[0].firstChild.data.handleRadius"
                          data-tooltip-popup-delay="1000" data-tooltip="Change Selected Object(s) Handle Radius"
+                         data-ng-disabled="!vm.c.selected.objects.length"
                          class="inline md-input-number-sm">
                 </md-input-container>
               </div>
