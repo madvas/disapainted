@@ -2,10 +2,11 @@
   'use strict';
 
   /* global _: true */
-  var sendJsError = _.throttle(function(analytics, exception) {
+  var sendJsError = _.throttle(function(analytics, exception, Authentication) {
+    var user = Authentication.user ? Authentication.user._id : '';
     analytics.eventTrack('error-js', {
       category : exception.message,
-      label    : location.pathname + '\n' + navigator.userAgent + '\n' + exception.stack
+      label    : user + '\n' + location.pathname + '\n' + navigator.userAgent + '\n' + exception.stack
     });
   }, 30000);
 
@@ -120,12 +121,12 @@
     $provide.decorator('$exceptionHandler', extendExceptionHandler);
   }
 
-  extendExceptionHandler.$inject = ['$delegate', '$analytics'];
+  extendExceptionHandler.$inject = ['$delegate', '$analytics', 'Authentication'];
 
   /* @ngInject */
-  function extendExceptionHandler($delegate, $analytics) {
+  function extendExceptionHandler($delegate, $analytics, Authentication) {
     return function(exception, cause) {
-      sendJsError($analytics, exception);
+      sendJsError($analytics, exception, Authentication);
       $delegate(exception, cause);
     };
   }
