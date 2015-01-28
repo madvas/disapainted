@@ -76,6 +76,7 @@
                 pauses in the animation without having to create identical consecutive frames.">
                   <span class="input-group-addon"><i class="icon-repeat-one"></i></span>
                   <input data-dp-valid-number type="number" min="1" max="999"
+                         data-ng-change="vm.f.currentFrame.dirty = true"
                          data-ng-model="vm.f.currentFrame.repeat" class="form-control input-number-sm"/>
                 </div>
               </div>
