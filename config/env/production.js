@@ -30,7 +30,7 @@ module.exports = {
         'public/lib/hammerjs/hammer.min.js',
         'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
         'public/lib/ngtoast/dist/ngToast.min.js',
-        'public/lib/paper/dist/paper-core.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.21/paper-core.min.js',
         'public/lib/angular-socialshare/angular-socialshare.min.js',
         'public/lib/angular-timeago/src/timeAgo.js',
         'http://platform.twitter.com/widgets.js',
