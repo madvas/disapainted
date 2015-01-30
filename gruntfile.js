@@ -81,7 +81,7 @@ module.exports = function(grunt) {
       },
       production : {
         options : {
-          mangle : false
+          mangle : true
         },
         files   : {
           'public/dist/build/application.min.js' : 'public/dist/build/application.js'
