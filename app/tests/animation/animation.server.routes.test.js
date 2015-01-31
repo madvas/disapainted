@@ -270,7 +270,7 @@ describe('Animation REST API tests', function() {
         });
     });
 
-    it('should allow visitors to load published frames with offset', function(done) {
+    it('should remove duplicate frames after publishing animation', function(done) {
       agentLoggedOut.get('/api/anims/' + animId + '/frames')
         .query({offset : 2})
         .expect(200)
@@ -279,7 +279,7 @@ describe('Animation REST API tests', function() {
           res.body.should.be.instanceof(Array).and.have.not.lengthOf(0);
           res.body[0].should.have.property('order', 2);
           res.body[0].should.have.property('objectData');
-          res.body[0].objectData.should.eql(animFrames[2].objectData);
+          res.body[0].objectData.should.eql('');
           done();
         });
     });

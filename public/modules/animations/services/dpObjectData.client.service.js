@@ -5,10 +5,10 @@
     .module('animations')
     .factory('dpObjectData', dpObjectData);
 
-  dpObjectData.$inject = ['$rootScope', 'dpPaperScope', '$q', 'jsonpack'];
+  dpObjectData.$inject = ['$rootScope', 'dpPaperScope', 'jsonpack'];
 
   /* @ngInject */
-  function dpObjectData($rootScope, dpPaperScope, $q, jsonpack) {
+  function dpObjectData($rootScope, dpPaperScope, jsonpack) {
     var me
       , _ = $rootScope
       , p = dpPaperScope;
@@ -16,7 +16,8 @@
     me = {
       unpackFrames : unpackFrames,
       pack         : pack,
-      unpack       : unpack
+      unpack       : unpack,
+      rasterize    : rasterize
     };
 
     return me;
@@ -25,9 +26,10 @@
 
     function unpackFrames(frames) {
       _.each(frames, function(frame) {
-        frame.objectData = unpack(frame.objectData);
+        if (frame.objectData) {
+          frame.objectData = unpack(frame.objectData);
+        }
       });
-      return rasterize(frames);
     }
 
     function unpack(objectData) {
@@ -35,6 +37,22 @@
     }
 
     function pack(objectData) {
+      objectData = clearDataProperties(objectData);
+      return jsonpack.pack(jsonpack.JSON.stringify(objectData));
+    }
+
+    function rasterize(frames) {
+      var project = new p.Project();
+
+      _.each(frames, function(frame) {
+        project.activeLayer.importJSON(frame.objectData);
+        frame.rasterized = project.activeLayer.dpGetDataURL();
+        project.activeLayer.removeChildren();
+      });
+      project.remove();
+    }
+
+    function clearDataProperties(objectData) {
       recurseObjectData(objectData, function(obj) {
         if (obj.data) {
           delete obj.data.handleId;
@@ -42,26 +60,7 @@
           delete obj.data.stkId;
         }
       });
-      return jsonpack.pack(jsonpack.JSON.stringify(objectData));
-    }
-
-    function rasterize(frames) {
-      var promise
-        , promises = []
-        , project;
-
-      _.each(frames, function(frame) {
-        project = new p.Project();
-        project.activeLayer.importJSON(frame.objectData);
-        promise = project.activeLayer.dpGetDataURL();
-        promises.push(promise);
-        promise.then(_.partial(assignFrame, frame, project));
-      });
-      if (promises.length) {
-        promises = $q.all(promises);
-      }
-
-      return promises;
+      return objectData;
     }
 
     function recurseObjectData(object, iterator) {
@@ -78,11 +77,5 @@
 
       recurse(object);
     }
-
-    function assignFrame(frame, project, rasterized) {
-      frame.rasterized = rasterized;
-      project.remove();
-    }
-
   }
 })();

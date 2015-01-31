@@ -5,10 +5,10 @@
     .module('animations')
     .run(run);
 
-  run.$inject = ['$rootScope', 'AnimsConfig', 'dpPaperScope', '$q', 'dpBrowserType'];
+  run.$inject = ['$rootScope', 'AnimsConfig', 'dpPaperScope', 'dpBrowserType'];
 
   /* @ngInject */
-  function run($rootScope, AnimsConfig, dpPaperScope, $q, dpBrowserType) {
+  function run($rootScope, AnimsConfig, dpPaperScope, dpBrowserType) {
     var p = dpPaperScope
       , _ = $rootScope
       , browser = dpBrowserType.getType()
@@ -37,38 +37,8 @@
       }
     });
 
-    /**
-     * PaperJS saves raster objects (pictures) as URL to the source image + its modifications.
-     * We need to make sure all those images are loaded before frame is rasterized
-     */
     p.Layer.inject({
       dpGetDataURL   : function(bounds) {
-        var imageLoaded
-          , deferred = $q.defer()
-          , rasterObjects = this.getItems({'class' : p.Raster});
-
-
-        deferred.promise.$object = {};
-        this.dpGetBackground().opacity = 1;
-
-        imageLoaded = _.after(rasterObjects.length,
-          _.bind(_.partial(this.resolveDataURL, deferred, bounds), this));
-
-        _.each(rasterObjects, function(object) {
-          if (object.image.complete) {
-            imageLoaded();
-            return;
-          }
-          object.image.onload = imageLoaded;
-        });
-
-        if (!rasterObjects.length) {
-          this.resolveDataURL(deferred, bounds);
-        }
-
-        return deferred.promise;
-      },
-      resolveDataURL : function(deferred, bounds) {
         var raster
           , dataURL
           , subBounds = _.clone(bounds || canvasBounds);
@@ -91,8 +61,7 @@
         raster = this.rasterize().getSubRaster(subBounds);
         dataURL = raster.toDataURL();
         raster.remove();
-        deferred.promise.$object = dataURL;
-        deferred.resolve(dataURL);
+        return dataURL;
       }
     });
   }

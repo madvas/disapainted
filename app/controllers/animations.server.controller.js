@@ -73,9 +73,12 @@ exports.publish = function(req, res) {
   req.anim.title = req.body.title;
   req.anim.desc = req.body.desc;
   req.anim.datePublish = new Date();
-  req.anim.save(function(err) {
+  req.anim.save(function(err, anim) {
     if (err) return res.status(400).json(errHandler.getErrMsg(err));
-    return res.status(200).end();
+    anim.removeDuplicateFrames(function(err) {
+      if (err) return res.status(400).json(errHandler.getErrMsg(err));
+      return res.status(200).end();
+    });
   });
 };
 

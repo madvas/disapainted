@@ -74,12 +74,21 @@
         var promise = anim.getList(route, {offset : n * pageSize});
         promise.then(function(loadedFrames) {
           _.extend(frames, _.indexBy(loadedFrames, 'order'));
-          return dpObjectData.unpackFrames(loadedFrames);
+          return dpObjectData.unpackFrames(loadedFrames, frames);
         });
         promises.push(promise);
       });
 
       allPromises = $q.all(promises);
+      allPromises.then(function() {
+        _.each(frames, function(frame, key) {
+          if (!frame.objectData) {
+            frames[key].objectData = frames[frame.order - 1].objectData;
+          }
+          return frame;
+        });
+        dpObjectData.rasterize(frames);
+      });
       allPromises.$object = frames;
       return allPromises;
     }

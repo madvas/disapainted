@@ -89,7 +89,7 @@
     }
 
     function save() {
-      var dataUrl = p.project.activeLayer.dpGetDataURL(p.view.bounds).$object;
+      var dataUrl = p.project.activeLayer.dpGetDataURL(p.view.bounds);
       vm.auth.user.post('portrait', {portrait : _.stripBase64(dataUrl)}).then(function() {
         Authentication.user.portraitChangeTime = new Date().getTime();
         dpToast.success('You\'re looking good! Your new portrait was successfully saved');

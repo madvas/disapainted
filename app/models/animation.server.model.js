@@ -115,6 +115,25 @@ AnimationSchema.methods.removeFrames = function(fromOrder, count, callback) {
   });
 };
 
+AnimationSchema.methods.removeDuplicateFrames = function(callback) {
+  require('./animation-frame.server.model.js');
+  var AnimationFrame = mongoose.model('AnimationFrame'),
+    anim = this;
+  AnimationFrame.find({animation : anim._id}, 'objectData order', {sort : {order : 1}}, function(err, frames) {
+    if (err) return callback(err);
+    var prevObjectData = frames[0].objectData;
+    _.each(_.rest(frames), function(frame) {
+      if (frame.objectData === prevObjectData) {
+        frame.objectData = '';
+        frame.save();
+      } else {
+        prevObjectData = frame.objectData;
+      }
+    });
+    callback();
+  });
+};
+
 AnimationSchema.statics.findList = function(criteria, sortBy, page, limit, callback) {
   this.paginate(criteria, page, limit, callback, {
     columns : config.animations.listFields,

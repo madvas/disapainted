@@ -178,7 +178,7 @@
         , currentFrame = f.currentFrame;
 
       layerClone.dpGetHandlesRoot().visible = false;
-      currentFrame.rasterized = layerClone.dpGetDataURL().$object;
+      currentFrame.rasterized = layerClone.dpGetDataURL();
       currentFrame.objectData = activeLayer.dpGetExportableGroup().exportJSON({precision : 1, asString : false});
       currentFrame.dirty = suppressDirty ? currentFrame.dirty : true;
       layerClone.remove();
