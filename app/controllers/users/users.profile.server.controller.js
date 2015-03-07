@@ -9,7 +9,6 @@ var _ = require('lodash')
   , passport = require('passport')
   , config = require('../../../config/config')
   , fs = require('fs')
-  , base64resize = require('base64resize')
   , User = mongoose.model('User');
 
 exports.update = function(req, res) {
@@ -47,13 +46,14 @@ exports.savePortrait = function(req, res) {
   req.checkBody('portrait', 'Invalid portrait data').isBase64();
   errors = req.validationErrors();
   if (errors) return res.status(400).end();
-  base64resize({
-    src    : 'data:image/png;base64,' + req.body.portrait,
-    dst    : config.users.portraits.dir + req.user._id + '.png',
-    width  : config.users.portraits.width,
-    height : config.users.portraits.height
-  }, function(err) {
-    if (err) return res.status(400).json(errHandler.getErrMsg(err));
-    res.status(200).end();
-  });
+  console.log('resize here');
+  //base64resize({
+  //  src    : 'data:image/png;base64,' + req.body.portrait,
+  //  dst    : config.users.portraits.dir + req.user._id + '.png',
+  //  width  : config.users.portraits.width,
+  //  height : config.users.portraits.height
+  //}, function(err) {
+  //  if (err) return res.status(400).json(errHandler.getErrMsg(err));
+  //  res.status(200).end();
+  //});
 };

@@ -8,8 +8,7 @@ var mongoose = require('mongoose')
   , config = require('../../config/config')
   , moment = require('moment')
   , fs = require('fs')
-  , readdirp = require('readdirp')
-  , base64resize = require('base64resize');
+  , readdirp = require('readdirp');
 
 
 exports.create = function(req, res) {
@@ -107,14 +106,15 @@ exports.save = function(req, res) {
         if (err) {
           errors.push(_.extend({order : frame.order}, errHandler.getErrMsg(err)));
         } else if (frame.order === 0) {
-          base64resize({
-            src    : frame.thumbnail,
-            dst    : config.animations.thumbnails.dir + frame.animation + '.png',
-            width  : config.animations.thumbnails.width,
-            height : config.animations.thumbnails.height
-          }, function(err) {
-            if (err) errors.push(_.extend({order : frame.order}, errHandler.getErrMsg(err)));
-          });
+          console.log('resize here');
+          //base64resize({
+          //  src    : frame.thumbnail,
+          //  dst    : config.animations.thumbnails.dir + frame.animation + '.png',
+          //  width  : config.animations.thumbnails.width,
+          //  height : config.animations.thumbnails.height
+          //}, function(err) {
+          //  if (err) errors.push(_.extend({order : frame.order}, errHandler.getErrMsg(err)));
+          //});
         }
         framesSaved();
       });
