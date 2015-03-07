@@ -12,7 +12,7 @@ module.exports = {
     'inspired by Pivot Animator desktop application',
     keywords    : 'mongodb, express, angularjs, node.js, mongoose, passport'
   },
-  port              : process.env.PORT || 3000,
+  port              : process.env.PORT || 5000,
   secure            : process.env.SECURE || false,
   templateEngine    : 'swig',
   sessionSecret     : 'DisaPainted',
