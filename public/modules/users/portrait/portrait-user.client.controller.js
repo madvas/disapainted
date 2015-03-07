@@ -16,7 +16,7 @@
     var vm = this
       , p = dpPaperScope
       , _ = $scope
-      , userImgSrc = 'dist/thumbnails/users/' + $stateParams.userId + '.png?' + new Date().getTime();
+      , imgSrc = 'dist/thumbnails/users/users_tpl.png';
 
     vm.auth = Authentication;
     vm.t = dpPortraitTool;
@@ -48,7 +48,7 @@
       vm.background = p.project.activeLayer.dpGetBackground(p.project.view.bounds);
       vm.background.strokeColor = 'black';
       vm.template = new p.Raster({
-        source   : 'dist/thumbnails/users/users_tpl.png',
+        source   : imgSrc,
         position : p.view.center
       });
       vm.template.visible = !hideTemplate;
@@ -61,7 +61,7 @@
 
     function load() {
       var img = new Image();
-      img.src = userImgSrc;
+      img.src = imgSrc;
       if (img.complete) {
         vm.addExistingPortrait(img.src);
       } else {
@@ -90,8 +90,8 @@
 
     function save() {
       var dataUrl = p.project.activeLayer.dpGetDataURL(p.view.bounds);
-      vm.auth.user.post('portrait', {portrait : _.stripBase64(dataUrl)}).then(function() {
-        Authentication.user.portraitChangeTime = new Date().getTime();
+      vm.auth.user.post('portrait', {portrait : _.stripBase64(dataUrl)}).then(function(res) {
+        Authentication.user.thumbVersion = res.version;
         dpToast.success('You\'re looking good! Your new portrait was successfully saved');
         $state.go('viewUser', {userId : $stateParams.userId});
         $analytics.eventTrack('user-portrait', {

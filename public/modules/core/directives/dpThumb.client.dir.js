@@ -5,34 +5,43 @@
     .module('core')
     .directive('dpThumb', dpThumb);
 
-  dpThumb.$inject = ['Authentication'];
+  dpThumb.$inject = ['CloudinaryUrl'];
 
   /* @ngInject */
-  function dpThumb(Authentication) {
-    var directive
-      , basePath = 'dist/thumbnails/';
-
-    directive = {
+  function dpThumb(CloudinaryUrl) {
+    return {
       link     : link,
       restrict : 'A'
     };
-    return directive;
 
     function link(scope, el, attr) {
-      var type = attr.dpThumbType || 'anims'
-        , path = basePath + type + '/'
-        , clearCache = '';
+      var type = attr.dpThumbType || 'anims';
 
-      attr.$observe('dpThumb', function(id) {
-        if (id === Authentication.user._id && Authentication.user.portraitChangeTime) {
-          clearCache = '?' + Authentication.user.portraitChangeTime;
+      attr.$observe('dpThumbVersion', function(version, oldVersion) {
+        if (version === oldVersion || !version) {
+          return;
         }
-        if (id) attr.$set('src', path + id + '.png' + clearCache);
+        setPath(attr);
+      });
+
+      attr.$observe('dpThumb', function(id, oldId) {
+        if (id === oldId || !id) {
+          return;
+        }
+        setPath(attr);
       });
 
       el.on('error', function() {
-        el[0].src = path + type + '_tpl.png';
+        attr.$set('src', 'dist/thumbnails/' + type + '/' + type + '_tpl.png');
       });
+    }
+
+    function setPath(attr) {
+      var newPath = CloudinaryUrl;
+      if (attr.dpThumbVersion) {
+        newPath = CloudinaryUrl + 'v' + attr.dpThumbVersion + '/';
+      }
+      attr.$set('src', newPath + attr.dpThumb + '.png');
     }
   }
 })();

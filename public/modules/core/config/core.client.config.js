@@ -20,7 +20,8 @@
     .config(bootstrapConfig)
     .run(handleRouteChangeErr)
     .run(restangularRun)
-    .run(initServices);
+    .run(initServices)
+    .constant('CloudinaryUrl', 'http://res.cloudinary.com/hrvldaxzr/image/upload/');
 
   locationConfig.$inject = ['$locationProvider'];
 
@@ -70,9 +71,9 @@
   /* @ngInject */
   function mdThemeConfig($mdThemingProvider) {
     $mdThemingProvider.theme('default')
-      .primaryColor('green')
-      .accentColor('amber')
-      .warnColor('pink');
+      .primaryPalette('green')
+      .accentPalette('amber')
+      .warnPalette('pink');
   }
 
   bootstrapConfig.$inject = ['$tooltipProvider'];

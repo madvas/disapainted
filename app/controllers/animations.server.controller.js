@@ -8,6 +8,7 @@ var mongoose = require('mongoose')
   , config = require('../../config/config')
   , moment = require('moment')
   , fs = require('fs')
+  , cloudinary = require('cloudinary')
   , readdirp = require('readdirp');
 
 
@@ -106,15 +107,23 @@ exports.save = function(req, res) {
         if (err) {
           errors.push(_.extend({order : frame.order}, errHandler.getErrMsg(err)));
         } else if (frame.order === 0) {
-          console.log('resize here');
-          //base64resize({
-          //  src    : frame.thumbnail,
-          //  dst    : config.animations.thumbnails.dir + frame.animation + '.png',
-          //  width  : config.animations.thumbnails.width,
-          //  height : config.animations.thumbnails.height
-          //}, function(err) {
-          //  if (err) errors.push(_.extend({order : frame.order}, errHandler.getErrMsg(err)));
-          //});
+          /*jshint camelcase: false */
+          cloudinary.uploader.upload(frame.thumbnail, function(result) {
+            req.anim.thumbVersion = result.version;
+            req.anim.save(function(err) {
+              if (err) errors.push(_.extend({order : frame.order}, errHandler.getErrMsg(err)));
+            });
+          }, {
+            public_id       : req.anim._id,
+            tags            : ['users'],
+            overwrite       : true,
+            use_filename    : true,
+            unique_filename : false,
+            invalidate      : true,
+            crop            : 'scale',
+            width           : config.animations.thumbnails.width,
+            height          : config.animations.thumbnails.height
+          });
         }
         framesSaved();
       });

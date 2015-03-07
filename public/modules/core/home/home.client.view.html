@@ -16,7 +16,8 @@
                data-popover-placement="{{::vm.getPopoverPlacement(itemKey, type.list)}}"
                data-popover="{{::item.title}}" data-popover-trigger="mouseenter"
                class="md-whiteframe-z1 anim-thumb-link no-dec home-anim-link">
-              <img class="img-responsive w-100" data-dp-thumb="{{::item._id}}"/>
+              <img class="img-responsive w-100" data-dp-thumb="{{::item._id}}"
+                   data-dp-thumb-version="{{item.thumbVersion}}"/>
               <h6 class="gray-dark">
                 <i class="icon-film"></i> <span>{{::item.framesCount}}</span>
                 <i class="mar-lef-5 icon-star"></i> <span>{{::item.likesCount}}</span>
@@ -31,7 +32,9 @@
                data-ng-class="{'col-sm-offset-3' : itemKey === 4}">
             <a data-dp-user-href="{{::item._id}}"
                class="md-whiteframe-z1 anim-thumb-link no-dec home-user-link">
-              <img class="img-responsive center-block" data-dp-thumb="{{::item._id}}" data-dp-thumb-type="users">
+              <img class="img-responsive center-block" data-dp-thumb-version="{{item.thumbVersion}}"
+                   data-dp-thumb="{{::item._id}}"
+                   data-dp-thumb-type="users">
 
               <div class="user-caption gray-dark">
                 <div class="ellipsis">{{::item._id}}</div>

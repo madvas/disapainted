@@ -15,6 +15,7 @@ var mongoose = require('mongoose'),
   events = require('events'),
   _ = require('lodash'),
   Schema = mongoose.Schema,
+  cloudinary = require('cloudinary'),
   animationEmitter = new events.EventEmitter();
 
 
@@ -26,7 +27,7 @@ var titleValidator = [
     validator : 'isLength',
     arguments : [config.animations.titleMinLength, config.animations.titleMaxLength],
     message   : 'Title should be between ' + config.animations.titleMinLength + ' and ' +
-      config.animations.titleMaxLength + ' characters'
+    config.animations.titleMaxLength + ' characters'
   })
 ];
 
@@ -51,24 +52,28 @@ var descValidator = [
  * 'dateUpdate' -> Anim last update date
  */
 var AnimationSchema = new Schema({
-  title       : {
+  title        : {
     type     : String,
     trim     : true,
     validate : titleValidator
   },
-  desc        : {
+  desc         : {
     type     : String,
     trim     : true,
     validate : descValidator
   },
-  datePublish : {
+  datePublish  : {
     type      : Date,
     sparse    : true,
     'default' : null
   },
-  framesCount : {
+  framesCount  : {
     type      : Number,
     'default' : 0
+  },
+  thumbVersion : {
+    type      : String,
+    'default' : ''
   }
 });
 
@@ -90,7 +95,9 @@ AnimationSchema.methods.completeRemove = function(callback) {
     AnimationFrame.remove({animation : this._id}, function(err) {
       if (err) return callback(err);
       anim.remove(function(err, anim) {
-        callback(err, anim);
+        cloudinary.uploader.destroy(this._id, function() {
+          callback(err, anim);
+        });
       });
     });
   });

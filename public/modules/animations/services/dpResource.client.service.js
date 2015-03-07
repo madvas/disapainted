@@ -39,17 +39,9 @@
 
     function get(id, type) {
       type = type || 'anims';
-      var item = $sessionStorage[type][id];
-      if (item) {
-        var deferred = $q.defer();
-        item = Restangular.restangularizeElement(null, item, type);
-        deferred.resolve(item);
-        return _.extend(deferred.promise, {$object : item});
-      }
-      item = Restangular.one(type, id).get();
+      var item = Restangular.one(type, id).get();
       $sessionStorage[type][id] = item.$object;
       return item;
-
     }
 
     function add(items, type) {

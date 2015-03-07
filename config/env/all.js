@@ -12,7 +12,7 @@ module.exports = {
     'inspired by Pivot Animator desktop application',
     keywords    : 'mongodb, express, angularjs, node.js, mongoose, passport'
   },
-  port              : process.env.PORT || 5000,
+  port              : process.env.PORT || 3000,
   secure            : process.env.SECURE || false,
   templateEngine    : 'swig',
   sessionSecret     : 'DisaPainted',
@@ -87,7 +87,7 @@ module.exports = {
     files : 'public/modules/core/less/manifest.less'
   },
   animations        : {
-    framesLimit       : 1500,
+    framesLimit       : 500,
     listPageSize      : 15,
     framesPageSize    : 7,
     commentsPageSize  : 20,
@@ -115,7 +115,7 @@ module.exports = {
   },
   users             : {
     maxBioLength : 140,
-    listFields   : '_id created likesCount bio',
+    listFields   : '_id created likesCount bio thumbVersion',
     portraits    : {
       dir    : rootPath + '/public/dist/thumbnails/users/',
       width  : 246,

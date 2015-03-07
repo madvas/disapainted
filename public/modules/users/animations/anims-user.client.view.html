@@ -4,7 +4,8 @@
       <div class="pull-left md-whiteframe-z2 bg-white">
         <a data-tooltip-placement="bottom" tooltip="{{vm.creator ? 'Click to edit your profile picture' : ''}}"
            data-ng-href="{{vm.creator ? '/users/' + vm.current.user._id + '/portrait' : '#'}}">
-          <img data-dp-thumb="{{vm.current.user._id}}" data-dp-thumb-type="users" class="img-responsive">
+          <img data-dp-thumb="{{vm.current.user._id}}" data-dp-thumb-type="users"
+               data-dp-thumb-version="{{vm.current.user.thumbVersion}}" class="img-responsive">
         </a>
 
         <div class="hpad-15 vpad-15 pad-top-5 user-info-wrap">
@@ -55,7 +56,8 @@
               <div class="md-whiteframe-z1 bg-white">
                 <a data-dp-anim-href="{{::anim._id}}" data-dp-canvas-href="{{::!anim.datePublish}}"
                    class="no-dec display-block text-center">
-                  <img class="img-responsive w-100" data-dp-thumb="{{::anim._id}}" data-dp-thumb-type="anims">
+                  <img class="img-responsive w-100" data-dp-thumb-version="{{anim.thumbVersion}}"
+                       data-dp-thumb="{{::anim._id}}" data-dp-thumb-type="anims">
                 </a>
 
                 <div class="hpad-10 pad-bot-10 pad-top-5">

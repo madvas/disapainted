@@ -903,17 +903,9 @@ AppConfig.registerModule('users');
 
     function get(id, type) {
       type = type || 'anims';
-      var item = $sessionStorage[type][id];
-      if (item) {
-        var deferred = $q.defer();
-        item = Restangular.restangularizeElement(null, item, type);
-        deferred.resolve(item);
-        return _.extend(deferred.promise, {$object : item});
-      }
-      item = Restangular.one(type, id).get();
+      var item = Restangular.one(type, id).get();
       $sessionStorage[type][id] = item.$object;
       return item;
-
     }
 
     function add(items, type) {
@@ -3459,7 +3451,8 @@ AppConfig.registerModule('users');
     .config(bootstrapConfig)
     .run(handleRouteChangeErr)
     .run(restangularRun)
-    .run(initServices);
+    .run(initServices)
+    .constant('CloudinaryUrl', 'http://res.cloudinary.com/hrvldaxzr/image/upload/');
 
   locationConfig.$inject = ['$locationProvider'];
 
@@ -3509,9 +3502,9 @@ AppConfig.registerModule('users');
   /* @ngInject */
   function mdThemeConfig($mdThemingProvider) {
     $mdThemingProvider.theme('default')
-      .primaryColor('green')
-      .accentColor('amber')
-      .warnColor('pink');
+      .primaryPalette('green')
+      .accentPalette('amber')
+      .warnPalette('pink');
   }
 
   bootstrapConfig.$inject = ['$tooltipProvider'];
@@ -3762,34 +3755,43 @@ AppConfig.registerModule('users');
     .module('core')
     .directive('dpThumb', dpThumb);
 
-  dpThumb.$inject = ['Authentication'];
+  dpThumb.$inject = ['CloudinaryUrl'];
 
   /* @ngInject */
-  function dpThumb(Authentication) {
-    var directive
-      , basePath = 'dist/thumbnails/';
-
-    directive = {
+  function dpThumb(CloudinaryUrl) {
+    return {
       link     : link,
       restrict : 'A'
     };
-    return directive;
 
     function link(scope, el, attr) {
-      var type = attr.dpThumbType || 'anims'
-        , path = basePath + type + '/'
-        , clearCache = '';
+      var type = attr.dpThumbType || 'anims';
 
-      attr.$observe('dpThumb', function(id) {
-        if (id === Authentication.user._id && Authentication.user.portraitChangeTime) {
-          clearCache = '?' + Authentication.user.portraitChangeTime;
+      attr.$observe('dpThumbVersion', function(version, oldVersion) {
+        if (version === oldVersion || !version) {
+          return;
         }
-        if (id) attr.$set('src', path + id + '.png' + clearCache);
+        setPath(attr);
+      });
+
+      attr.$observe('dpThumb', function(id, oldId) {
+        if (id === oldId || !id) {
+          return;
+        }
+        setPath(attr);
       });
 
       el.on('error', function() {
-        el[0].src = path + type + '_tpl.png';
+        el[0].src = 'dist/thumbnails/' + type + '_tpl.png';
       });
+    }
+
+    function setPath(attr) {
+      var newPath = CloudinaryUrl;
+      if (attr.dpThumbVersion) {
+        newPath = CloudinaryUrl + 'v' + attr.dpThumbVersion + '/';
+      }
+      attr.$set('src', newPath + attr.dpThumb + '.png');
     }
   }
 })();
@@ -4580,7 +4582,7 @@ AppConfig.registerModule('users');
     var vm = this
       , p = dpPaperScope
       , _ = $scope
-      , userImgSrc = 'dist/thumbnails/users/' + $stateParams.userId + '.png?' + new Date().getTime();
+      , imgSrc = 'dist/thumbnails/users/users_tpl.png';
 
     vm.auth = Authentication;
     vm.t = dpPortraitTool;
@@ -4612,7 +4614,7 @@ AppConfig.registerModule('users');
       vm.background = p.project.activeLayer.dpGetBackground(p.project.view.bounds);
       vm.background.strokeColor = 'black';
       vm.template = new p.Raster({
-        source   : 'dist/thumbnails/users/users_tpl.png',
+        source   : imgSrc,
         position : p.view.center
       });
       vm.template.visible = !hideTemplate;
@@ -4625,7 +4627,7 @@ AppConfig.registerModule('users');
 
     function load() {
       var img = new Image();
-      img.src = userImgSrc;
+      img.src = imgSrc;
       if (img.complete) {
         vm.addExistingPortrait(img.src);
       } else {
@@ -4654,8 +4656,9 @@ AppConfig.registerModule('users');
 
     function save() {
       var dataUrl = p.project.activeLayer.dpGetDataURL(p.view.bounds);
-      vm.auth.user.post('portrait', {portrait : _.stripBase64(dataUrl)}).then(function() {
-        Authentication.user.portraitChangeTime = new Date().getTime();
+      vm.auth.user.post('portrait', {portrait : _.stripBase64(dataUrl)}).then(function(res) {
+        console.log('new version: ' + res.version);
+        Authentication.user.thumbVersion = res.version;
         dpToast.success('You\'re looking good! Your new portrait was successfully saved');
         $state.go('viewUser', {userId : $stateParams.userId});
         $analytics.eventTrack('user-portrait', {

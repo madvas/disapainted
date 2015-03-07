@@ -9,6 +9,7 @@ var _ = require('lodash')
   , passport = require('passport')
   , config = require('../../../config/config')
   , fs = require('fs')
+  , cloudinary = require('cloudinary')
   , User = mongoose.model('User');
 
 exports.update = function(req, res) {
@@ -46,14 +47,22 @@ exports.savePortrait = function(req, res) {
   req.checkBody('portrait', 'Invalid portrait data').isBase64();
   errors = req.validationErrors();
   if (errors) return res.status(400).end();
-  console.log('resize heres');
-  //base64resize({
-  //  src    : 'data:image/png;base64,' + req.body.portrait,
-  //  dst    : config.users.portraits.dir + req.user._id + '.png',
-  //  width  : config.users.portraits.width,
-  //  height : config.users.portraits.height
-  //}, function(err) {
-  //  if (err) return res.status(400).json(errHandler.getErrMsg(err));
-  //  res.status(200).end();
-  //});
+  /*jshint camelcase: false */
+  cloudinary.uploader.upload('data:image/png;base64,' + req.body.portrait, function(result) {
+    req.user.thumbVersion = result.version;
+    req.user.save(function(err) {
+      if (err) return res.status(400).json(errHandler.getErrMsg(err));
+      res.status(200).json({version : result.version});
+    });
+  }, {
+    public_id       : req.user._id,
+    tags            : ['users'],
+    overwrite       : true,
+    use_filename    : true,
+    unique_filename : false,
+    invalidate      : true,
+    crop            : 'scale',
+    width           : config.users.portraits.width,
+    height          : config.users.portraits.height
+  });
 };
