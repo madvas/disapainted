@@ -9,14 +9,13 @@ var fs = require('fs')
   , express = require('express')
   , expressValidator = require('express-validator')
   , apiRouter = express.Router()
-  , morgan = require('morgan')
   , bodyParser = require('body-parser')
   , session = require('express-session')
   , compress = require('compression')
   , methodOverride = require('method-override')
   , cookieParser = require('cookie-parser')
   , helmet = require('helmet')
-  , logger = require('./logger')
+  //, logger = require('./logger')
   , passport = require('passport')
   , mongoStore = require('connect-mongo')({
     session : session
@@ -76,8 +75,6 @@ module.exports = function(db) {
   app.set('view engine', 'server.view.html');
   app.set('views', './app/views');
 
-
-  app.use(morgan(logger.getLogFormat(), logger.getLogOptions()));
 
   // Environment dependent middleware
   if (process.env.NODE_ENV === 'development') {

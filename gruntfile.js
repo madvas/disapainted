@@ -248,7 +248,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('dev', ['env:dev', 'lint', 'concurrent:dev']);
   grunt.registerTask('production', [
-    'build', 'env:production', 'forever:production:stop', 'forever:production:start', 'webhook'
+    'build', 'env:production', 'forever:production:stop', 'forever:production:start'
   ]);
   grunt.registerTask('production-stop', ['forever:production:stop']);
   grunt.registerTask('default', ['production']);
