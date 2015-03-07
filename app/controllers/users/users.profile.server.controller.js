@@ -46,7 +46,7 @@ exports.savePortrait = function(req, res) {
   req.checkBody('portrait', 'Invalid portrait data').isBase64();
   errors = req.validationErrors();
   if (errors) return res.status(400).end();
-  console.log('resize here');
+  console.log('resize heres');
   //base64resize({
   //  src    : 'data:image/png;base64,' + req.body.portrait,
   //  dst    : config.users.portraits.dir + req.user._id + '.png',

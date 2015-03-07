@@ -275,6 +275,9 @@ module.exports = function(grunt) {
   grunt.registerTask('e2e-dev', ['env:dev', 'protractor:main']);
   grunt.registerTask('e2e-prod', ['env:production', 'protractor:main']);
 
+  grunt.registerTask('heroku:development', 'dev');
+  grunt.registerTask('heroku:production', 'production');
+
   grunt.task.registerTask('create-deploys', 'Sets basepath in deploys.json file', function() {
     var config = require(__dirname + '/deploysTpl.json');
     config.deploys[0].basepath = __dirname;
