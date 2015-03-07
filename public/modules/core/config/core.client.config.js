@@ -21,7 +21,7 @@
     .run(handleRouteChangeErr)
     .run(restangularRun)
     .run(initServices)
-    .constant('CloudinaryUrl', 'http://res.cloudinary.com/hrvldaxzr/image/upload/');
+    .constant('CloudinaryUrl', 'https://res.cloudinary.com/hrvldaxzr/image/upload/');
 
   locationConfig.$inject = ['$locationProvider'];
 

@@ -3782,7 +3782,7 @@ AppConfig.registerModule('users');
       });
 
       el.on('error', function() {
-        el[0].src = 'dist/thumbnails/' + type + '_tpl.png';
+        attr.$set('src', 'dist/thumbnails/' + type + '/' + type + '_tpl.png');
       });
     }
 
@@ -4657,7 +4657,6 @@ AppConfig.registerModule('users');
     function save() {
       var dataUrl = p.project.activeLayer.dpGetDataURL(p.view.bounds);
       vm.auth.user.post('portrait', {portrait : _.stripBase64(dataUrl)}).then(function(res) {
-        console.log('new version: ' + res.version);
         Authentication.user.thumbVersion = res.version;
         dpToast.success('You\'re looking good! Your new portrait was successfully saved');
         $state.go('viewUser', {userId : $stateParams.userId});
