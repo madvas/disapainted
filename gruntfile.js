@@ -120,10 +120,10 @@ module.exports = function(grunt) {
       dev : {
         script  : 'server.js',
         options : {
-          nodeArgs : [''],
+          nodeArgs : ['--debug'],
           ext      : 'js,html',
-          ignore   : ['node_modules/**', 'public/**']
-          //watch    : watchFiles.serverViews.concat(watchFiles.serverJS)
+          ignore   : ['node_modules/**', 'public/**'],
+          watch    : watchFiles.serverViews.concat(watchFiles.serverJS)
         }
       }
     },
@@ -148,8 +148,7 @@ module.exports = function(grunt) {
       }
     },
     concurrent       : {
-      //default : ['nodemon', 'watch'],
-      default : ['nodemon'],
+      default : ['nodemon', 'watch'],
       debug   : ['nodemon', 'watch', 'node-inspector'],
       dev     : ['nodemon', 'watch:lessFiles'],
       options : {

@@ -8,9 +8,8 @@ app/tests/coverage/
 .bower-*/
 .idea/
 config/sslcert/*.pem
-public/dist/build
 logs
 deploys.json
 env-src-dev.json
 env-src.json
-build
+/build

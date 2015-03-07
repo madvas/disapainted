@@ -26,8 +26,7 @@ module.exports = {
         'public/lib/lodash/dist/lodash.min.js',
         'public/lib/angular-lodash/angular-lodash.js',
         'public/lib/restangular/dist/restangular.min.js',
-        'http://ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.js',
-        'public/lib/hammerjs/hammer.min.js',
+        'https://ajax.googleapis.com/ajax/libs/angular_material/0.8.2/angular-material.min.js',
         'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
         'public/lib/ngtoast/dist/ngToast.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.21/paper-core.min.js',
@@ -43,7 +42,7 @@ module.exports = {
     },
     css : [
       'public/lib/angular-socialshare/angular-socialshare.min.css',
-      'http://ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.css',
+      'https://ajax.googleapis.com/ajax/libs/angular_material/0.8.2/angular-material.min.css',
       'public/lib/ngtoast/dist/ngToast.min.css',
       'public/lib/angular-bootstrap-colorpicker/css/colorpicker.css',
       'https://fonts.googleapis.com/css?family=RobotoDraft:300,400',

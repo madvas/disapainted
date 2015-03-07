@@ -45,7 +45,6 @@ module.exports = {
         'public/lib/restangular/dist/restangular.js',
         'public/lib/angular-aria/angular-aria.min.js',
         'public/lib/angular-material/angular-material.min.js',
-        'public/lib/hammerjs/hammer.min.js',
         'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
         'public/lib/ngtoast/dist/ngToast.min.js',
         'public/lib/paper/dist/paper-core.js',
