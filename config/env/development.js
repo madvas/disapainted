@@ -2,7 +2,7 @@
 
 module.exports = {
   db       : {
-    uri     : 'mongodb://localhost/disapainted-dev',
+    uri     : process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/disapainted-dev',
     options : {
       user : '',
       pass : ''
