@@ -903,9 +903,17 @@ AppConfig.registerModule('users');
 
     function get(id, type) {
       type = type || 'anims';
-      var item = Restangular.one(type, id).get();
+      var item = $sessionStorage[type][id];
+      if (type === 'anims' && item) {
+        var deferred = $q.defer();
+        item = Restangular.restangularizeElement(null, item, type);
+        deferred.resolve(item);
+        return _.extend(deferred.promise, {$object : item});
+      }
+      item = Restangular.one(type, id).get();
       $sessionStorage[type][id] = item.$object;
       return item;
+
     }
 
     function add(items, type) {
@@ -3452,7 +3460,7 @@ AppConfig.registerModule('users');
     .run(handleRouteChangeErr)
     .run(restangularRun)
     .run(initServices)
-    .constant('CloudinaryUrl', 'http://res.cloudinary.com/hrvldaxzr/image/upload/');
+    .constant('CloudinaryUrl', 'https://res.cloudinary.com/hrvldaxzr/image/upload/');
 
   locationConfig.$inject = ['$locationProvider'];
 
