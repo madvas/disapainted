@@ -6,12 +6,13 @@
     .controller('ListAnimationsController', ListAnimationsController);
 
   ListAnimationsController.$inject = [
-    '$scope', '$localStorage', 'AnimsConfig', 'Restangular', 'dpResource', '$anchorScroll', '$location', '$analytics'
+    '$scope', '$localStorage', 'AnimsConfig', 'Restangular', 'dpResource', '$anchorScroll', '$location', '$analytics',
+    'Authentication'
   ];
 
   /* @ngInject */
   function ListAnimationsController($scope, $localStorage, AnimsConfig, Restangular, dpResource, $anchorScroll,
-                                    $location, $analytics) {
+                                    $location, $analytics, Authentication) {
     /* jshint validthis: true */
     var vm = this
       , unwatchFuncs = []
@@ -61,6 +62,8 @@
     vm.activate = activate;
     vm.getList = getList;
     vm.changeList = changeList;
+    vm.isAdminLogged = isAdminLogged;
+    vm.removeAnim = removeAnim;
     activate();
 
     ////////////////
@@ -110,6 +113,16 @@
 
     function destroy() {
       _.invoke(unwatchFuncs, 'call');
+    }
+
+    function isAdminLogged() {
+      return _.contains(Authentication.user.roles, 'admin');
+    }
+
+    function removeAnim(anim) {
+      Restangular.restangularizeElement(null, anim, 'anims').remove().then(function() {
+        _.remove(vm.anims, anim);
+      });
     }
 
   }

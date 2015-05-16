@@ -136,14 +136,8 @@ describe('Animation REST API tests', function() {
 
     it('should allow user to save animation frames', function(done) {
       agent.post('/api/anims/' + animId + '/edit/frames')
-        .send(animFrames)
-        .expect(200)
-        .end(function(err) {
-          var file = config.animations.thumbnails.dir + animId + '.png';
-          should.not.exist(err);
-          fs.existsSync(file).should.eql(true);
-          fs.unlink(file, done);
-        });
+          .send(animFrames)
+          .expect(200, done);
     });
 
     it('should not allow unauthorized to save animation frames', function(done) {

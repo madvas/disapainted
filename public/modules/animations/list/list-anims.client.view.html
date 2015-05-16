@@ -18,7 +18,9 @@
         <a class="ellipsis pull-left w-100 h6 item-title font-lg-if-sm"
            data-dp-anim-href="{{anim._id}}">{{anim.title | characters:35}}</a>
 
-        <div><i class="icon-film font-lg-if-sm"></i> {{anim.framesCount}}</div>
+        <div><i class="icon-film font-lg-if-sm"></i> {{anim.framesCount}}
+            <a ng-if="vm.isAdminLogged()" style="cursor: pointer" ng-click="vm.removeAnim(anim)"> X</a>
+        </div>
         <div><i class="icon-star font-lg-if-sm"></i> {{anim.likesCount}}</div>
         <span>by <a class="font-lg-if-sm" data-dp-user-href="{{anim.creator}}">{{anim.creator}}</a></span>
       </div>
