@@ -5,6 +5,7 @@
  */
 var _ = require('lodash')
   , errHandler = require('../errors.server.controller')
+  , core = require('../core.server.controller')
   , mongoose = require('mongoose')
   , passport = require('passport')
   , config = require('../../../config/config')
@@ -22,6 +23,14 @@ exports.update = function(req, res) {
   });
 };
 
+exports.userById = function(req, res, next) {
+  User.findById(req.params.userId, function(err, user) {
+    if (err) return next(err);
+    if (!user) return next(new Error('Failed to load user ' + req.params.userId));
+    req.user = user;
+    next();
+  });
+};
 
 exports.info = function(req, res) {
   User.findById(req.params.userId, config.users.listFields, function(err, user) {
@@ -66,3 +75,16 @@ exports.savePortrait = function(req, res) {
     height          : config.users.portraits.height
   });
 };
+
+exports.unsubscribe = function(req, res) {
+  if (core.createToken(req.user.email) === req.params.token) {
+    req.user.unsubscribed = true;
+    req.user.save(function(err) {
+      if (err) return res.status(400).send(errHandler.getErrMsg(err));
+      return res.redirect('/');
+    });
+  } else {
+    return res.status(401).end();
+  }
+};
+

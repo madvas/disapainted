@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose')
   , errHandler = require('./errors.server.controller')
+  , core = require('./core.server.controller')
   , Animation = mongoose.model('Animation')
   , _ = require('lodash')
   , AnimationFrame = mongoose.model('AnimationFrame')
@@ -9,6 +10,8 @@ var mongoose = require('mongoose')
   , moment = require('moment')
   , fs = require('fs')
   , cloudinary = require('cloudinary')
+  , nodemailer = require('nodemailer')
+  , User = mongoose.model('User')
   , readdirp = require('readdirp');
 
 
@@ -157,6 +160,8 @@ exports.removeFrames = function(req, res) {
 exports.like = function(req, res) {
   req.anim.addLike(req.user._id, function(err, anim) {
     if (err) return res.status(400).json(errHandler.getErrMsg(err));
+    sendNotification(req.anim, 'Congrats, your animation was liked!', anim.likesCount,
+      'templates/anim-like-notification-email', req, res);
     return res.status(200).send(_.pick(anim, 'likesCount', 'likes'));
   });
 };
@@ -185,6 +190,10 @@ exports.unlikeComment = function(req, res) {
 exports.addComment = function(req, res) {
   var commentId = req.anim.addComment(req.user._id, req.body.message, function(err) {
     if (err) return res.status(400).json(errHandler.getErrMsg(err));
+    if (req.anim.creator !== req.user._id) {
+      sendNotification(req.anim, 'Your animation was commented!', req.body.message,
+        'templates/anim-comment-notification-email', req, res);
+    }
     return res.status(200).json({_id : commentId});
   });
 };
@@ -263,3 +272,34 @@ exports.figures = function(req, res) {
       res.status(200).send(figureTypes);
     });
 };
+
+
+function sendNotification(anim, subject, notificationData, template, req, res) {
+  User.findById(anim.creator, function(err, creator) {
+    if (creator.unsubscribed || !creator.email) {
+      return;
+    }
+    var thumbPath = config.cloudinaryUrl;
+    var token = core.createToken(creator.email);
+    if (anim.thumbVersion) {
+      thumbPath = config.cloudinaryUrl + 'v' + anim.thumbVersion + '/';
+    }
+    res.render(template, {
+      animThumb        : thumbPath + anim._id + '.png',
+      animTitle        : anim.title,
+      animUrl          : 'http://' + req.headers.host + '/animations/' + anim._id,
+      unsubscribeUrl   : 'http://' + req.headers.host + '/api/users/' + req.user._id + '/unsubscribe/' + token,
+      username         : req.user._id,
+      notificationData : notificationData
+    }, function(err, emailHTML) {
+      var smtpTransport = nodemailer.createTransport(config.mailer.options)
+        , mailOptions = {
+          to      : creator.email,
+          from    : config.mailer.from,
+          subject : subject,
+          html    : emailHTML
+        };
+      smtpTransport.sendMail(mailOptions);
+    });
+  });
+}

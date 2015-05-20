@@ -1,6 +1,7 @@
 'use strict';
 
 var config = require('../../config/config')
+  , crypto = require('crypto')
   , nodemailer = require('nodemailer');
 
 exports.index = function(req, res) {
@@ -31,4 +32,8 @@ exports.contact = function(req, res) {
     if (err) return res.status(400).send({message : 'Sorry, message could not be sent'});
     res.status(200).end();
   });
+};
+
+exports.createToken = function(string) {
+  return crypto.createHash('sha1').update(string).digest('hex');
 };

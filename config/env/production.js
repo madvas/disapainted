@@ -82,7 +82,7 @@ module.exports = {
     callbackURL  : '/api/auth/github/callback'
   },
   mailer   : {
-    from    : process.env.MAILER_FROM || 'noreply@disapainted.com',
+    from    : process.env.MAILER_FROM || 'disapainted@disapainted.com',
     options : {
       service : process.env.MAILER_SERVICE_PROVIDER || undefined,
       port    : process.env.MAILER_PORT || 25,

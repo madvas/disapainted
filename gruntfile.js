@@ -12,7 +12,8 @@ module.exports = function(grunt) {
     clientCSS   : ['public/modules/**/*.css'],
     lessFiles   : ['public/modules/**/*.less'],
     spriteFiles : ['public/modules/**/img/**/*.png'],
-    mochaTests  : ['app/tests/**/*.js']
+    //mochaTests  : ['app/tests/**/*.js']
+    mochaTests  : ['app/tests/user/*.js']
   };
 
   var webhookPort = process.env.WEBHOOK_PORT || 3000;

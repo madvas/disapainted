@@ -47,5 +47,5 @@ module.exports = function(app) {
   app.get('/users/:userId', users.info);
   app.get('/list/users/likes', core.limit, users.listUsersLikes);
   app.post('/users/:userId/portrait', users.requiresLogin, users.hasAuthorization, users.savePortrait);
-
+  app.get('/users/:userId/unsubscribe/:token', users.userById, users.unsubscribe);
 };

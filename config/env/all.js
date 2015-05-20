@@ -86,6 +86,7 @@ module.exports = {
     ],
     files : 'public/modules/core/less/manifest.less'
   },
+  cloudinaryUrl     : 'https://res.cloudinary.com/hrvldaxzr/image/upload/',
   animations        : {
     framesLimit       : 500,
     listPageSize      : 15,

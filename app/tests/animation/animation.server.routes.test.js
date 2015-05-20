@@ -22,6 +22,7 @@ var app = require('../../../server')
   , agent = request.agent(app)
   , agent2 = request.agent(app)
   , agentLoggedOut = request.agent(app)
+  , mockMailer = require('mock-nodemailer')
   , animationTestData = require(__dirname + '/animation-test-data.json')
   , animListProperties = ['likesCount', 'creator', 'title', 'datePublish', 'framesCount',
                           'dateUpdate', 'dateCreation', 'desc']
@@ -285,7 +286,7 @@ describe('Animation REST API tests', function() {
         .expect(401, done);
     });
 
-    it('should not icrease total number of likes to anim creator', function(done) {
+    it('should not increase total number of likes to anim creator', function(done) {
       agent.get('/api/users/' + _user._id)
         .expect(200)
         .end(function(err, res) {
@@ -309,7 +310,11 @@ describe('Animation REST API tests', function() {
         });
     });
 
-    it('should icrease total number of likes to anim creator', function(done) {
+    it('should increase total number of likes to anim creator', function(done) {
+      mockMailer.expectEmail(function(sentEmail) {
+        _user.email.should.eql(sentEmail.to);
+        return true;
+      }, done);
       agent.get('/api/users/' + _user._id)
         .expect(200)
         .end(function(err, res) {

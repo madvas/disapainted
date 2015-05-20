@@ -115,6 +115,10 @@ var UserSchema = new Schema({
   thumbVersion            : {
     type    : String,
     default : ''
+  },
+  unsubscribed            : {
+    type    : Boolean,
+    'default' : false
   }
 });
 
