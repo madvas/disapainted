@@ -47,10 +47,10 @@
           subBounds.height *= p.view.pixelRatio;
         }
         if (this.strokeBounds.x < 0) {
-          subBounds.x -= this.strokeBounds.x;
+          subBounds.x -= this.strokeBounds.x * p.view.pixelRatio;
         }
         if (this.strokeBounds.y < 0) {
-          subBounds.y -= this.strokeBounds.y;
+          subBounds.y -= this.strokeBounds.y * p.view.pixelRatio;
         }
 
         if (bounds && browser !== 'safari') { // Strange Safari bug doesn't rasterise otherwise

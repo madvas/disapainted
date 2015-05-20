@@ -16,7 +16,7 @@
     "ngstorage": "~0.3.0",
     "angular-touch": "~1.3.3",
     "angular-socialshare": "~0.0.6",
-    "paper": "~0.9.21",
+    "paper": "=0.9.21",
     "angular-bootstrap-colorpicker": "~3.0.9",
     "ngtoast": "~1.3.0",
     "angular-timeago": "~0.1.6",

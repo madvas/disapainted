@@ -267,10 +267,10 @@ AppConfig.registerModule('users');
           subBounds.height *= p.view.pixelRatio;
         }
         if (this.strokeBounds.x < 0) {
-          subBounds.x -= this.strokeBounds.x;
+          subBounds.x -= this.strokeBounds.x * p.view.pixelRatio;
         }
         if (this.strokeBounds.y < 0) {
-          subBounds.y -= this.strokeBounds.y;
+          subBounds.y -= this.strokeBounds.y * p.view.pixelRatio;
         }
 
         if (bounds && browser !== 'safari') { // Strange Safari bug doesn't rasterise otherwise
@@ -1523,10 +1523,10 @@ AppConfig.registerModule('users');
     .module('canvas')
     .factory('dpCanvas', dpCanvas);
 
-  dpCanvas.$inject = ['$rootScope', 'dpCanvasConfig', 'dpPaperScope', 'dpCanvasFrames', 'dpObjectData'];
+  dpCanvas.$inject = ['$rootScope', 'dpCanvasConfig', 'dpPaperScope', 'dpCanvasFrames'];
 
   /* @ngInject */
-  function dpCanvas($rootScope, dpCanvasConfig, dpPaperScope, dpCanvasFrames, dpObjectData) {
+  function dpCanvas($rootScope, dpCanvasConfig, dpPaperScope, dpCanvasFrames) {
     /* jshint maxstatements: false */
     var me, groupsToHandle, prevObjectScale, prevPathScale, project, selectedGroupCenter
       , unwatchFuncs = []
@@ -1535,8 +1535,6 @@ AppConfig.registerModule('users');
       , handleState = dpCanvasConfig.handleState
       , p = dpPaperScope
       , f = dpCanvasFrames;
-
-    var d = dpObjectData;
 
     me = {
       selected                 : {objects : []},

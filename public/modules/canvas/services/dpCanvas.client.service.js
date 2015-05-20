@@ -5,10 +5,10 @@
     .module('canvas')
     .factory('dpCanvas', dpCanvas);
 
-  dpCanvas.$inject = ['$rootScope', 'dpCanvasConfig', 'dpPaperScope', 'dpCanvasFrames', 'dpObjectData'];
+  dpCanvas.$inject = ['$rootScope', 'dpCanvasConfig', 'dpPaperScope', 'dpCanvasFrames'];
 
   /* @ngInject */
-  function dpCanvas($rootScope, dpCanvasConfig, dpPaperScope, dpCanvasFrames, dpObjectData) {
+  function dpCanvas($rootScope, dpCanvasConfig, dpPaperScope, dpCanvasFrames) {
     /* jshint maxstatements: false */
     var me, groupsToHandle, prevObjectScale, prevPathScale, project, selectedGroupCenter
       , unwatchFuncs = []
@@ -17,8 +17,6 @@
       , handleState = dpCanvasConfig.handleState
       , p = dpPaperScope
       , f = dpCanvasFrames;
-
-    var d = dpObjectData;
 
     me = {
       selected                 : {objects : []},
