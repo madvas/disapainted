@@ -43,11 +43,12 @@
 
     function rasterize(frames) {
       var project = new p.Project();
-
+      var activeLayer = project.activeLayer;
       _.each(frames, function(frame) {
-        project.activeLayer.importJSON(frame.objectData);
-        frame.rasterized = project.activeLayer.dpGetDataURL();
-        project.activeLayer.removeChildren();
+        activeLayer.importJSON(frame.objectData);
+        activeLayer.dpGetBackground().opacity = 1;
+        frame.rasterized = activeLayer.dpGetDataURL();
+        activeLayer.removeChildren();
       });
       project.remove();
     }

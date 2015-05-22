@@ -113,12 +113,12 @@ describe('User REST API tests', function() {
 
   it('should not unsubscribe user with invalid token', function(done) {
     agent.get('/api/users/' + userId + '/unsubscribe/abc')
-      .expect(401, done)
+      .expect(401, done);
   });
 
   it('should unsubscribe user with valid token', function(done) {
     agent.get('/api/users/' + userId + '/unsubscribe/15c44d7e8ff7d39e82d4ee43a576caa2de5d683e')
-      .expect(200, done)
+      .expect(200, done);
   });
 
   describe('User Portrait', function() {

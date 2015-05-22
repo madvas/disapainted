@@ -71,7 +71,8 @@
     "browser",
     "element",
     "by",
-    "$$"
+    "$$",
+    "xit"
   ],
   "devel"        : true
 }
