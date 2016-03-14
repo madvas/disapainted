@@ -1,9 +1,22 @@
 <md-toolbar data-ng-controller="HeaderController as vm">
   <div class="md-toolbar-tools" layout="row">
-    <h3><a class="no-dec no-color" data-ng-href="/"><img class="logo" src="modules/core/img/brand/dplogo.svg" />
+    <h3><a class="no-dec no-color" data-ng-href="/"><img class="logo" src="modules/core/img/brand/dplogo.svg"/>
     </a></h3>
 
-    <div flex></div>
+    <div flex style="text-align: center; font-size: 14px; font-weight: bold">
+      <div hide-sm>
+        Sorry, we've run out of resources <br/>
+        If you'd like to keep disapainted going please consider
+        <form style="display: inline; margin-left: 10px;" action="https://www.paypal.com/cgi-bin/webscr" method="post"
+              target="_top">
+          <input type="hidden" name="cmd" value="_s-xclick">
+          <input type="hidden" name="hosted_button_id" value="9HAJBZ7LCBSSN">
+          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit"
+                 alt="PayPal - The safer, easier way to pay online!">
+          <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+        </form>
+      </div>
+    </div>
     <a hide-sm data-ng-if="!vm.auth.user" class="no-dec no-color mar-rig-5" href="/signin">Sign In</a>
     <a hide-sm data-ng-if="!vm.auth.user" class="no-dec no-color mar-rig-5" href="/signup">Sign Up</a>
     <a hide-sm data-ng-if="vm.auth.user" data-ng-href="/users/{{vm.auth.user._id}}" class="no-dec no-color mar-rig-5">
